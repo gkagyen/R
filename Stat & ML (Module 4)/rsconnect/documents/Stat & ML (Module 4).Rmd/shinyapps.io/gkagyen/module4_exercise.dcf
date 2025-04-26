@@ -5,7 +5,7 @@ account: gkagyen
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 14591903
-bundleId: 10179086
+bundleId: 10184469
 url: https://gkagyen.shinyapps.io/module4_exercise/
 version: 1
 asMultiple: FALSE

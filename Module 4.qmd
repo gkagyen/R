@@ -747,7 +747,7 @@ ggplot(roc_data, aes(x = FPR, y = TPR))+
 
 Congratulations on completing 20 days of learning R! Take some time to relax and review what you’ve learned.
 
-### Stats & ML Mini Project 
+### Stats & ML Mini Project
 
 This mini project is designed to test your understanding through a realistic healthcare analytics scenario using the **Pima Indians diabetes** dataset `pima` from the `pdp` package.
 

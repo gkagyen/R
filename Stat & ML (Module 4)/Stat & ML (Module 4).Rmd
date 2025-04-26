@@ -269,3 +269,103 @@ Train a linear regression model with **10-fold cross-validation** to predict `mp
 ```{r crossval, exercise = TRUE}
 
 ```
+
+## Day 19: ML Basics - Classification with Logistic Regression
+
+### Multichoice Questions
+```{r day19quiz}
+quiz(
+  caption = "Choose the correct answer from the provided options",
+  question("What type of dependent variable is required for logistic regression?",
+         answer("Continuous numeric"),
+         answer("Binary categorical", correct = TRUE),
+         answer("Ordinal categorical"),
+         answer("Any variable type"),
+         incorrect = "Logistic regression requires a binary (two-category) outcome variable."
+  ),
+
+  question("What does the logistic function (sigmoid) transform?",
+         answer("Input features to higher dimensions"),
+         answer("Linear predictions to probabilities between 0 and 1", correct = TRUE),
+         answer("Categorical variables to numeric values"),
+         answer("Non-linear relationships to linear ones"),
+         incorrect = "The sigmoid function converts the linear combination of predictors to a probability between 0 and 1."
+  ),
+
+  question("Which metric is NOT typically used to evaluate classification models?",
+         answer("Accuracy"),
+         answer("RMSE", correct = TRUE),
+         answer("Recall"),
+         answer("Specificity"),
+         incorrect = "RMSE is used for regression, not classification problems."
+  ),
+
+  question("What does the AUC (Area Under Curve) represent in an ROC curve?",
+         answer("The probability the model will make an error"),
+         answer("The model's accuracy at all thresholds"),
+         answer("The model's ability to distinguish between classes", correct = TRUE),
+         answer("The optimal classification threshold"),
+         incorrect = "AUC measures how well the model distinguishes between positive and negative classes across all thresholds."
+  ),
+
+  question("In a confusion matrix, what does recall measure?",
+         answer("Correct positive predictions out of all positive predictions"),
+         answer("Correct positive predictions out of all actual positives", correct = TRUE),
+         answer("Correct negative predictions out of all negative predictions"),
+         answer("Overall correctness of predictions"),
+         incorrect = "Recall (sensitivity) measures how many actual positives were correctly identified."
+  ),
+
+  question("Which package provides comprehensive ROC curve plotting capabilities?",
+         answer("ggplot2"),
+         answer("ROCR", correct = TRUE),
+         answer("caret"),
+         answer("pROC"),
+         incorrect = "ROCR is specifically designed for visualizing classifier performance."
+  ),
+
+  question("What does a precision of 0.8 mean?",
+         answer("80% of positive predictions were correct", correct = TRUE),
+         answer("80% of actual positives were identified"),
+         answer("The model is correct 80% of the time"),
+         answer("The false positive rate is 20%"),
+         incorrect = "Precision measures the proportion of positive identifications that were correct."
+  )
+)
+
+```
+
+### Logistic regression
+
+Train a **logistic regression** model to predict `vs` (engine type) from `mpg` and `wt` in `mtcars` using `caret`. Store as `logit_model`. (**Hint**: Convert `vs` to factor first).
+```{r logreg, exercise = TRUE}
+
+
+```
+<div id="logreg-hint">
+**Hint:** Use `method='glm'` and `family='binomial'` for logistic regression.
+</div>
+
+### Confusion Matrix
+
+Generate predictions from `logit_model` on `mtcars` and create a **confusion matrix**. Store as `conf_mat`.
+```{r confmat, exercise = TRUE}
+
+```
+
+### ROC curve with ROCR
+
+Using `ROCR` package, create an **ROC curve** for the logistic regression model. First get predicted probabilities `(type='prob')`, then plot the ROC curve.
+```{r ROC, exercise = TRUE}
+
+```
+
+### Calculate AUC
+
+Calculate the **AUC** for the logistic regression model using `ROCR` package. Store the AUC value in a variable `auc_value`.
+```{r AUC, exercise = TRUE}
+
+```
+<div id="logreg-hint">
+**Hint:** Use `performance()` with `measure='auc'`
+</div>
