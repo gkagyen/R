@@ -1,0 +1,289 @@
+---
+title: "End of Module Quiz (Module 5)"
+output: learnr::tutorial
+runtime: shiny_prerendered
+description: "50 Days Data Science Course"
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Day 11: Basic Visualisation with Base R
+
+### Multichoice Questions
+
+```{r day11quiz}
+quiz(
+  caption = "Choose the correct answer from the provided options",
+  question("Which function would you use to create a scatter plot in base R?",
+    answer("hist()"),
+    answer("plot()", correct = TRUE),
+    answer("barplot()"),
+    answer("boxplot()"),
+    incorrect = "The plot() function creates scatter plots by default when given two numeric vectors."
+  ),
+
+  question("What parameter controls the point character in base R plots?",
+    answer("col"),
+    answer("lty"),
+    answer("pch", correct = TRUE),
+    answer("cex"),
+    incorrect = "pch controls the point character/symbol in base R plots."
+  ),
+
+  question("How would you add a title to a base R plot?",
+    answer("title = 'My Title'"),
+    answer("main = 'My Title'", correct = TRUE),
+    answer("plot_title('My Title')"),
+    answer("add_title('My Title')"),
+    incorrect = "The main parameter adds a title to base R plots."
+  ),
+
+  question("Which function creates side-by-side boxplots for different groups?",
+    answer("boxplot(y ~ x, data = df)", correct = TRUE),
+    answer("hist(y ~ x, data = df)"),
+    answer("plot(y ~ x, data = df)"),
+    answer("barplot(y ~ x, data = df)"),
+    incorrect = "boxplot() with formula syntax creates grouped boxplots."
+  ),
+
+  question("What does the 'breaks' parameter control in hist()?",
+    answer("The color of the bars"),
+    answer("The number or position of bins", correct = TRUE),
+    answer("The axis labels"),
+    answer("The plot title"),
+    incorrect = "breaks controls how data is binned in a histogram."
+  ),
+
+  question("How would you add a horizontal line at y=0 to an existing plot?",
+    answer("vline(0)"),
+    answer("abline(h = 0)", correct = TRUE),
+    answer("hline(0)"),
+    answer("add_line(y = 0)"),
+    incorrect = "abline(h = ) adds horizontal reference lines."
+  )
+)
+```
+
+### Create scatter plot
+
+Create a scatter plot of the `mtcars` dataset with `wt` on x-axis and `mpg` on y-axis. Add the title "Car Weight vs MPG"
+
+```{r createscatter, exercise = TRUE}
+
+
+```
+
+### Create a Histogram
+
+Create a histogram of the `Sepal.Length` from the `iris` dataset with 15 bins and the title "Sepal Length Distribution"
+
+```{r createhist, exercise = TRUE}
+
+
+```
+
+### Box plot
+
+create a boxplot of `mpg` by `cylinder (cyl)` from `mtcars`
+
+```{r createbp, exercise = TRUE}
+
+```
+
+### Barplot
+
+Create a **barplot** of the mean `mpg` by `gear` from `mtcars` with blue bars and the title "Average MPG by Gear"
+
+```{r createbar, exercise = TRUE}
+
+```
+
+## Day 12: Visualisation with **`ggplot2`**
+
+### Multichoice Questions
+
+```{r day12quiz}
+quiz(
+  caption = "Choose the correct answer from the provided options",
+  question("Which ggplot2 function initiates a plot?",
+         answer("ggplot()", correct = TRUE),
+         answer("plot()"),
+         answer("geom_point()"),
+         answer("aes()"),
+         incorrect = "ggplot() creates the initial plot object."
+),
+
+question("How do you map variables to visual properties in ggplot2?",
+         answer("Using the map() function"),
+         answer("Within the aes() function", correct = TRUE),
+         answer("With the geom() function"),
+         answer("Using scale_* functions"),
+         incorrect = "aes() (aesthetics) maps variables to visual properties."
+),
+
+question("Which geom would you use to create a scatter plot?",
+         answer("geom_bar()"),
+         answer("geom_line()"),
+         answer("geom_point()", correct = TRUE),
+         answer("geom_histogram()"),
+         incorrect = "geom_point() creates scatter plots."
+),
+
+question("How would you change the colour of all points in a scatter plot to blue?",
+         answer("aes(colour = 'blue')"),
+         answer("colour = 'blue' (outside aes)", correct = TRUE),
+         answer("scale_colour_manual('blue')"),
+         answer("geom_point(colours = 'blue')"),
+         incorrect = "Set colour outside aes() for constant values."
+),
+
+question("Which function would you use to add axis labels and a title?",
+         answer("theme()"),
+         answer("labels()"),
+         answer("labs()", correct = TRUE),
+         answer("ggtitle()"),
+         incorrect = "labs() can set title, subtitle, and axis labels."
+),
+
+question("How would you apply the classic ggplot theme?",
+         answer("theme_classic()", correct = TRUE),
+         answer("theme_default()"),
+         answer("set_theme('classic')"),
+         answer("theme(style = 'classic')"),
+         incorrect = "theme_classic() applies the classic theme."
+)
+  
+)
+```
+
+### Basic ggplot Scatter Plot
+
+Create a ggplot scatter plot of the mtcars data with `wt` on x-axis and `mpg` on y-axis, with points coloured by number of cylinders `(cyl)`.
+
+```{r ggscatter, exercise = TRUE}
+
+```
+
+### Customized Bar Chart
+
+Create a ggplot bar chart of mean `mpg` by `gear` (as factor) with fill colour by `gear`, and add the title **'Average MPG by Gear'**.
+
+```{r ggbarplt, exercise = TRUE}
+
+```
+
+### Histogram with Custom Bins
+
+Create a ggplot histogram of `Sepal.Length` from `iris` with 20 bins, filled blue with white borders.
+
+```{r gghistplt, exercise = TRUE}
+
+```
+
+### Themed Line Plot
+
+Create a line plot of the `pressure` data *(built-in dataset)* with `temperature` on x-axis and `pressure` on y-axis, using the minimal theme and proper axis labels.
+
+```{r ggline, exercise = TRUE}
+
+```
+
+## Day 13: Under Constructions ⚙🛠
+
+### Multichoice Questions
+
+```{r day13quiz}
+quiz(
+  caption = "Choose the correct answer from the provided options",
+  question("How would you create small multiples/facets by a variable?",
+         answer("Using geom_facet()"),
+         answer("With facet_wrap() or facet_grid()", correct = TRUE),
+         answer("With small_multiples()"),
+         answer("Using theme(facets = TRUE)"),
+         incorrect = "facet_wrap() and facet_grid() create small multiples."
+  ),
+
+question("Which function would you use to add text annotations?",
+         answer("geom_text()", correct = TRUE),
+         answer("annotate_text()"),
+         answer("add_text()"),
+         answer("text_layer()"),
+         incorrect = "geom_text() adds text annotations at specific coordinates."
+  ),
+
+question("How would you modify theme elements like axis text size?",
+         answer("theme_text(size = 12)"),
+         answer("theme(element.text = size(12))"),
+         answer("theme(text = element_text(size = 12))"),
+         answer("theme(axis.text = element_text(size = 12))", correct = TRUE),
+         incorrect = "Modify specific theme elements with theme() + element_* functions."
+  ),
+
+question("Which function would you use to add a reference line?",
+         answer("geom_abline()", correct = TRUE),
+         answer("reference_line()"),
+         answer("add_line()"),
+         answer("geom_reference()"),
+         incorrect = "geom_abline() adds straight reference lines."
+  ),
+
+question("How would you create a custom color scale for a continuous variable?",
+         answer("scale_color_manual()"),
+         answer("scale_color_gradient()", correct = TRUE),
+         answer("set_colors()"),
+         answer("color_palette()"),
+         incorrect = "scale_color_gradient() creates custom continuous color scales."
+  ),
+
+question("What does the 'expand' parameter control in scale_* functions?",
+         answer("The legend size"),
+         answer("The expansion around the data limits", correct = TRUE),
+         answer("The axis line width"),
+         answer("The plot margins"),
+         incorrect = "expand controls padding around the data limits."
+  )
+)
+```
+
+### Faceted Plot
+
+Create a scatter plot of `mtcars` `(mpg vs wt)` faceted by number of cylinders `(cyl)`, with `free y-scales`."
+
+```{r facetplt, exercise = TRUE}
+
+```
+
+### Annotated Plot
+
+Create a scatter plot of `iris` `Sepal.Length` vs `Sepal.Width` with an annotation saying **"Setosa"** at coordinates `(5, 4)`.
+
+```{r anotateplt, exercise = TRUE}
+
+```
+
+### Custom Theme
+
+Create a bar plot of `diamonds` `cut` counts with a custom theme: white background, major grid lines in grey, and axis titles in bold.
+
+```{r customtheme, exercise = TRUE}
+
+```
+
+### Combined Plot Elements
+
+Create a line plot of `economics` data `(date vs unemploy)` with:
+
+-   a smoothed trend line `(method = 'loess')`,
+-   x-axis label **'Year'**,
+-   minimal theme, and
+-   light blue background.
+
+```{r combinedplt, exercise = TRUE}
+
+```

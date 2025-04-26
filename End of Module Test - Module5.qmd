@@ -1,0 +1,83 @@
+---
+title: |
+  ![](ghRlogo.png){width=1inch}
+  End of Module Test (Module 5)
+subtitle: "Visualising Data with R"
+author: "**Tutor**: George K Agyen"
+format: 
+  pdf:
+    sansfont: "Times New Roman"
+    sansfontoptions: 
+      - Scale = 1.3
+    mainfont: 'Times New Roman'
+    mainfontoptions: 
+      - Scale = 1.1
+editor: visual
+---
+
+\newpage
+
+## Day 15: Break Day & Data Storytelling Test
+
+### Take a Break!
+
+Congratulations on completing 15 days of learning R! Take some time to relax and review what you’ve learned.
+
+### **Instructions For Submission**
+
+-   Answer all the questions provided in an R script
+
+-   Save the finished work with your last name and module number separated by an underscore (e.g. if your name is **Benjamin Owusu**, you save the script file as `Owusu_Module5.R` )
+
+-   Submit the saved script to me via email at **`gkagyen@ghana-rusers.org`** with the subject **Module 5 Test**
+
+-   You have one day to complete this test and submit by end of day on **`Wednesday 23rd April 2024`**
+
+### **Data Storytelling Test**
+
+To reinforce your skills, try these tasks using the **`ChickWeight`** dataset:
+
+1.  **Base R Plots**
+
+    a)  Create a scatter plot of weight vs. time for all chicks
+    b)  Make a histogram of weights at day 21 only
+    c)  Generate a boxplot comparing weights across different diets
+    d)  Create a bar chart showing mean weight per diet
+
+2.  **Basic ggplot2**
+
+    a)  Make a scatter plot of weight vs. time with diet-specific colours
+    b)  Create a line plot showing average weight over time for each diet
+    c)  Generate a histogram of all weights with 15 bins
+    d)  Make a boxplot of weights by diet with flipped coordinates
+
+3.  **Customizing ggplot2**
+
+    a)  Add a title "Chick Growth by Diet" and axis labels to any plot from Q2
+    b)  Make points larger `(size=3)` and semi-transparent `(alpha=0.6)` in the scatter plot
+    c)  Change line type to dashed in the line plot
+    d)  Apply the **`theme_classic()`** to one of your plots
+
+4.  **Faceting**
+
+    a)  Create faceted histograms showing weight distributions per diet
+    b)  Make a faceted scatter plot (time vs. weight) with one facet per chick
+    c)  Add free y-scales to the faceted histograms
+
+5.  **Theme Customization**
+
+    a)  Create a custom theme that:
+
+    -   Has a light blue panel background
+    -   Uses bold, dark red axis titles
+    -   Removes minor grid line
+
+    b)  Apply this theme to your line plot from Question 2
+
+6.  **Annotations**
+
+    a)  Add a text annotation at day 10, weight 150 saying "Growth Spurt"
+
+    b)  Place a horizontal reference line at the overall mean weight
+
+    c)  Highlight the maximum weight value with a point annotation

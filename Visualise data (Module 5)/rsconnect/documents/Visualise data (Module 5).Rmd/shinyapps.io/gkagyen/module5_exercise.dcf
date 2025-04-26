@@ -1,0 +1,12 @@
+name: module5_exercise
+title: module5_exercise
+username: gkagyen
+account: gkagyen
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14550811
+bundleId: 10147692
+url: https://gkagyen.shinyapps.io/module5_exercise/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

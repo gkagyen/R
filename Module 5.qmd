@@ -1,0 +1,593 @@
+---
+title: "50 Days Data Science"
+subtitle: "Module 5"
+author: "George K. Agyen"
+format: html
+editor: visual
+---
+
+## Day 11: Introduction to Data Visualization
+
+### What is Data Visualization?
+
+Data visualization is the process of creating graphical representations of data to uncover patterns, trends, and insights. It is a critical step in data analysis because it helps communicate findings effectively.
+
+### Why Visualize Data?
+
+-   **Identify Patterns**: Spot trends, correlations, and outliers.
+
+-   **Communicate Insights**: Make complex data understandable.
+
+-   **Support Decision-Making**: Provide evidence for data-driven decisions.
+
+### Base R Plotting
+
+R has built-in functions for creating basic plots. Let’s explore some of them:
+
+**1. Scatter Plot**
+
+-   **`plot()`**: Creates a scatter plot.
+
+``` r
+# Create sample datasets for scatter plot
+set.seed(123) # For reproducibility
+
+x <- rnorm(50, mean = 10, sd = 2)
+y <- 2*x + rnorm(50, mean = 0, sd = 3)
+relationship_data <- tibble::tibble(x = x, y = y)
+
+# Create scatter plot
+plot(relationship_data$x, relationship_data$y,
+     main = 'Basic scatter plot',
+     xlab = 'X Variable', ylab = 'Y Variable')
+```
+
+-   **Arguments**:
+
+    -   `x`, `y`: The variables to plot.
+    -   `main`: The title of the plot.
+    -   `xlab`, `ylab`: Labels for the x and y axes.
+
+**2. Histogram**
+
+-   **`hist()`**: Creates a histogram to show the distribution of a numeric variable.
+
+``` r
+# Create sample data for histograms
+hist_data <- c(
+  rnorm(200, mean = 25, sd = 5),   # Normal distribution
+  rbeta(100, shape1 = 2, shape2 = 5) * 40  # Right-skewed distribution
+)
+
+# Basic histogram
+hist(hist_data,
+     main = "Basic Histogram",
+     xlab = "Values",
+     ylab = "Frequency",
+     col = "skyblue",
+     border = "white")
+```
+
+-   **Arguments**:
+
+    -   `x`: The numeric variable to plot.
+    -   `main`: The title of the plot.
+    -   `xlab`: Label for the x-axis.
+    -   `col`: bar colour
+    -   `border`: bar outline colour
+
+**3. Bar chart**
+
+-   **`barplot():`** creates a bar plot to show the distribution of categories
+
+``` r
+# create sampleFor bar plots
+categories <- c("Group A", "Group B", "Group C", "Group D", "Group E")
+values <- c(23, 45, 12, 78, 34)
+bar_data <- tibble(categories = categories, values = values)
+
+
+# Horizontal bar plot with custom colours
+barplot(bar_data$values,
+        names.arg = bar_data$categories,
+        main = "Horizontal Bar Plot with Custom Colors",
+        xlab = "Values",
+        col = rainbow(length(bar_data$categories)),
+        border = "white",
+        horiz = TRUE, # Horizontal orientation
+        las = 1) # Make y-axis labels horizontal
+```
+
+**3. Boxplot**
+
+-   **`boxplot()`**: Creates a boxplot to show the distribution of a numeric variable across categories.
+
+``` r
+# Create sample data for boxplot 
+groups <- rep(c("Control", "Treatment 1", "Treatment 2"), each = 30)
+measurements <- c(
+  rnorm(30, mean = 10, sd = 2),  # Control group
+  rnorm(30, mean = 13, sd = 2.5), # Treatment 1
+  rnorm(30, mean = 15, sd = 3)   # Treatment 2
+)
+box_data <- tibble::tibble(groups = groups, measurements = measurements)
+
+boxplot(measurements ~ groups, data = box_data,
+        main = "Basic Box Plot", xlab = "Groups",
+        ylab = "Measurements", col = "lightgreen")
+```
+
+-   **Arguments**:
+
+    -   `x`: The numeric variable to plot.
+
+    -   `main`: The title of the plot.
+
+### Install `ggplot2`
+
+`ggplot2` is a powerful and flexible package for creating advanced visualizations.
+
+``` r
+install.packages("ggplot2")
+```
+
+### Day 11 Challenge
+
+1.  Load the `iris` dataset and create a **scatter plot** of `Sepal.Length` vs `Sepal.Width.`
+
+2.  Use `barplot()` to show the count of each `Species` in iris `(hint: use table(iris$Species))`.
+
+3.  Create a **histogram** of `Petal.Length` from `iris` with a **colour** of your choice.
+
+## Day 12: Visualisationn with `ggplot2`
+
+### What is `ggplot2`?
+
+`ggplot2` is a widely used R package for creating elegant and customizable visualizations. It follows the **Grammar of Graphics**, which means you build plots layer by layer.
+
+### Basic `ggplot2` Syntax
+
+The basic syntax of `ggplot2` is:
+
+``` r
+ggplot(data, aes(x, y)) + geom_layer()
+```
+
+-   **`ggplot()`**: Initializes the plot.
+-   **Arguments**:
+    -   `data`: The dataset to use.
+
+    -   `aes()`: Specifies the aesthetics (e.g., x, y, colour).
+-   **`geom_layer()`**: Adds a geometric layer (e.g., points, lines, bars).
+
+``` r
+library(ggplot2)
+
+# Load built-in datasets
+data(mtcars)    # Motor Trend Car Road Tests
+data(diamonds)  # Diamond prices and attributes
+data(economics) # US economic time series
+
+# Create some sample data
+set.seed(100) 
+
+# Sample data for different plots
+df <- tibble::tibble(
+  category = rep(c("A", "B", "C", "D"), each = 25),
+  value = c(rnorm(25, 10, 2), rnorm(25, 13, 2), 
+            rnorm(25, 18, 1.5), rnorm(25, 15, 3)),
+  group = rep(c("Group1", "Group2"), 50)
+)
+```
+
+### Create Basic Plots
+
+1.  **Scatter Plot**
+
+``` r
+library(ggplot2) 
+
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point()
+```
+
+1.  **Line Plot**
+
+``` r
+# Basic line plot
+ggplot(economics, aes(x = date, y = unemploy)) +
+  geom_line()
+```
+
+1.  **Bar Plot**
+
+``` r
+# Basic bar plot with counts
+ggplot(df, aes(x = category)) +
+  geom_bar()
+```
+
+**4. Histogram**
+
+``` r
+# Basic histogram
+ggplot(df, aes(x = value)) +
+  geom_histogram()
+```
+
+**5. Boxplot**
+
+``` r
+# Basic box plot
+ggplot(df, aes(x = category, y = value)) +
+  geom_boxplot()
+```
+
+### **Customize Plots**
+
+-   **Add Titles and Labels**:
+
+``` r
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  labs(
+    title = "Car Weight vs. Fuel Efficiency",
+    subtitle = "Data from the mtcars dataset",
+    caption = "Source: Motor Trend Magazine, 1974",
+    x = "Weight (1000 lbs)",
+    y = "Miles Per Gallon"
+  )
+```
+
+-   **Change Colours and fill**: In `ggplot2` we can add colours to plots in several ways
+
+``` r
+# Manual colour specification
+ggplot(mtcars, aes(x = wt, y = mpg, colour = factor(cyl))) +
+  geom_point() +
+  scale_colour_manual(values = c("4" = "orange", "6" = "turquoise", "8" = "violet")) +
+  labs(colour = "Cylinders")
+
+# Color gradient
+ggplot(mtcars, aes(x = wt, y = mpg, colour = hp)) +
+  geom_point(size = 3) +
+  scale_colour_gradient(low = "blue", high = "red") +
+  labs(colour = "Horsepower")
+```
+
+using colour palettes
+
+``` r
+# ColourBrewer palette for categories
+ggplot(mtcars, aes(x = wt, y = mpg, colour = factor(cyl))) +
+  geom_point() +
+  scale_colour_brewer(palette = "Set1") +
+  labs(colour = "Cylinders")
+
+# Viridis palette for continuous variable
+ggplot(mtcars, aes(x = wt, y = mpg, colour = hp)) +
+  geom_point() +
+  scale_colour_viridis_b() +
+  labs(colour = "Horsepower")
+```
+
+-   **Adjusting Point/Line Size and Shape**
+
+``` r
+# Mapping a variable to size
+ggplot(mtcars, aes(x = wt, y = mpg, size = hp)) +
+  geom_point(alpha = 0.7) + # alpha controls transparency
+  labs(size = "Horsepower")
+
+# Mapping a variable to shape
+ggplot(mtcars, aes(x = wt, y = mpg, shape = factor(cyl))) +
+  geom_point(size = 2) + # size increases size of points
+  labs(shape = "Cylinders")
+
+# Combining multiple aesthetics
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl), 
+                   size = hp, shape = factor(am))) +
+  geom_point(alpha = 0.7) +
+  labs(colour = "Cylinders", size = "Horsepower", shape = "Transmission")
+
+# Adjusting Line width 
+ggplot(economics, aes(x = date, y = unemploy)) +
+  geom_line(linewidth=1, colour = 'violet') +
+  labs(title = "Economic Indicators Over Time",
+       x = "Year",
+       y = "Value")
+```
+
+-   **Themes - built in**
+
+``` r
+# theme void
+ggplot(df, aes(x = value)) +
+  geom_histogram(bins = 20, colour = 'black', fill = 'khaki') +
+  labs(x = 'Values', title = 'Basic Histogram')+
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = 'bold'))
+
+# theme classic
+ggplot(df, aes(x = value)) +
+  geom_histogram(bins = 20, colour = 'black', fill = 'khaki') +
+  labs(x = 'Values', title = 'Basic Histogram')+
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5, face = 'bold'))
+
+# theme black and white (bw)
+ggplot(df, aes(x = value)) +
+  geom_histogram(bins = 20, colour = 'black', fill = 'khaki') +
+  labs(x = 'Values', title = 'Basic Histogram')+
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5, face = 'bold'))
+
+# theme minimal
+ggplot(df, aes(x = value)) +
+  geom_histogram(bins = 20, colour = 'black', fill = 'khaki') +
+  labs(x = 'Values', title = 'Basic Histogram')+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = 'bold'))
+
+# dark theme
+ggplot(df, aes(x = value)) +
+  geom_histogram(bins = 20, colour = 'black', fill = 'khaki') +
+  labs(x = 'Values', title = 'Basic Histogram')+
+  theme_dark() +
+  theme(plot.title = element_text(hjust = 0.5, face = 'bold'))
+```
+
+### Day 12 Challenge
+
+1.  **Create a Boxplot**
+
+    Make a **boxplot** showing the distribution of diamond prices (`price`) for each cut quality (`cut`). Add `title`: "Diamond Price Distribution by Cut Quality“, `X-axis label`: "Diamond Cut" `Y-axis label`: "Price (USD)“ and Use `theme_light()`
+
+2.  **Create a Histogram**
+
+    Plot a histogram of carat weights (`carat`): Use 20 bins, Fill colour: `"darkgreen“`, Add `title`: "Distribution of Diamond Carat Weights", `X-axis label`: "Carat Weight"
+
+3.  **Customize a Plot**
+
+    Take your boxplot from Question 1 and: Change the theme to `theme_classic()`, Make the boxplot fill colour `"lightblue"`, Add a `subtitle`: "Data from ggplot2 diamonds dataset", Rotate x-axis labels 45 degrees using `theme(axis.text.x = element_text(angle = 45, hjust = 1))`
+
+4.  **Create a Bar Plot**
+
+    Show the count of diamonds by colour (`color`):Fill bars by diamond colour, Add `title`: "Diamond Count by Colour Grade", `X-axis label`: "Colour Grade (D-J)" and Use `theme_minimal()`
+
+## Day 13: Advanced ggplot2 (Facets, Themes, Annotations)
+
+### Facets
+
+Facets allow you to create multiple plots based on a categorical variable or multiple variables
+
+**Simple Facets with `facet_wrap()`**
+
+``` r
+# Create a basic plot using mpg data
+p <- ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() + theme_bw()
+
+# Use facet_wrap to create panels by class
+p + facet_wrap(~drv)
+
+# Allow y-axis scales to vary between panels
+p + facet_wrap(~class, scales = "free_y")
+```
+
+-   **Controlling the facet layout**
+
+    ``` r
+    # Specify number of rows
+    p + facet_wrap(~class, nrow = 2)
+
+    # Specify number of columns
+    p + facet_wrap(~class, ncol = 3)
+    ```
+
+**Two Variable faceting with `facet_grid()`**
+
+``` r
+ggplot(mtcars, aes(x = mpg, y = hp)) +   geom_point() +   facet_grid(gear ~ cyl)
+```
+
+**Varying scales in facet**
+
+``` r
+# Allow y-axis scales to vary between panels
+p + facet_wrap(~class, scales = "free_y")
+
+# Allow both x and y-axis scales to vary
+ggplot(mtcars, aes(x = mpg, y = hp)) +   geom_point() +   facet_grid(gear ~ cyl, scales = 'free')
+```
+
+### Themes
+
+Themes allow you to customize the appearance of your plots.
+
+**Built in themes**
+
+`theme_minimal()` : A minimal theme with no background `theme_classic()` : A classic theme with no grid lines `theme_bw()` : A black and white theme `theme_dark()` : A dark theme `theme_light()` : A light theme
+
+**Customize Themes**
+
+We can customise themes using the `theme()` function
+
+-   **Customising text elements**
+
+    ``` r
+    p <- ggplot(mpg, aes(x = displ, y = hwy, colour = class)) +
+      geom_point() + theme_bw()
+
+    p + labs(title = "Engine Size vs. Fuel Efficiency") +
+      theme(
+      axis.title = element_text(size = 16, face = "bold"),
+      axis.text = element_text(size = 12),
+      legend.title = element_text(size = 14, face = "italic"),
+      legend.text = element_text(size = 10),
+      plot.title = element_text(size = 20, face = "bold", hjust = 0.5)
+    ) 
+    ```
+
+-   **Customising plot background**
+
+    ``` r
+    p + theme(
+      panel.background = element_rect(fill = "lightyellow"),
+      plot.background = element_rect(fill = "lightblue", colour = "black", size = 2),
+      panel.grid.major = element_line(colour = "gray60", linetype = "dashed"),
+      panel.grid.minor = element_blank()
+    )
+    ```
+
+-   **Customising legend appearance**
+
+    ``` r
+    p + theme(
+      legend.position = "bottom",
+      legend.background = element_rect(fill = "orange4", colour = "navy"),
+      legend.key = element_rect(fill = "white"),
+      legend.margin = margin(10, 10, 10, 10)
+    )
+    ```
+
+-   **Creating a custom theme function**
+
+    for a consistent styling across your plots, you can create a custom theme that you can apply to all your plots
+
+    ``` r
+    my_theme <- function() {
+      theme_minimal() +
+        theme(
+          axis.title = element_text(size = 12, face = "bold"),
+          axis.text = element_text(size = 10),
+          panel.grid.major = element_line(color = "gray80"),
+          panel.grid.minor = element_blank(),
+          legend.position = "bottom",
+          plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+          plot.subtitle = element_text(size = 12, hjust = 0.5),
+          plot.caption = element_text(size = 8, hjust = 1)
+        )
+    }
+
+    # Apply the custom theme
+    p + my_theme() +
+      labs(title = "My Custom Themed Plot",
+           subtitle = "With consistent styling")
+    ```
+
+### Annotations
+
+Add text or shapes to highlight specific parts of your plot. **`annotate()`** adds annotations to your plot
+
+-   **Adding Text**
+
+    ``` r
+    # Create a basic plot
+    p <- ggplot(mpg, aes(x = displ, y = hwy)) +
+      geom_point()
+
+    # Add text annotation
+    p + annotate("text", x = 6, y = 40, 
+                 label = "Efficient large engines", 
+                 colour = "blue", size = 5)
+    ```
+
+-   **Adding Reference Lines**
+
+    ``` r
+    # Add horizontal reference line
+    p + 
+      geom_hline(yintercept = 25, linetype = "dashed", colour = "red") +
+      annotate("text", x = 3, y = 26, 
+               label = "Efficiency threshold", 
+               colour = "red", size = 2)
+
+    p +
+      p +
+      geom_vline(xintercept = 5, colour = "navy", linetype = "dotdash") +
+      annotate("text",
+               x = 4.8,                       
+               y = max(mpg$hwy),               
+               label = "Critical Displacement",
+               colour = "thistle4",
+               angle = 90,                    
+               fontface = 'bold',
+               hjust = 1)
+    ```
+
+-   **Highlighting Regions**
+
+    ``` r
+    # Highlight a rectangular region
+    p + 
+      annotate("rect", xmin = 5, xmax = 7, 
+               ymin = 10, ymax = 25,
+               alpha = 0.2, fill = "yellow")
+    ```
+
+### Day 13 Challenge
+
+1.  Create a scatter plot of `mpg` vs `hp` and use `facet_wrap()` to split by `cyl`.
+
+2.  Apply a custom theme to your plot.
+
+3.  Add an annotation to highlight a specific data point.
+
+## Day 15: Break Day & Data Storytelling Practice
+
+### Take a Break!
+
+Congratulations on completing 15 days of learning R! Take some time to relax and review what you’ve learned.
+
+### **Data Storytelling Practice**
+
+To reinforce your skills, try these tasks:
+
+1.  **Base R Plots**
+
+    a\) Create a scatter plot of weight vs. time for all chicks\
+
+    b)  Make a histogram of weights at day 21 only\
+    c)  Generate a boxplot comparing weights across different diets\
+    d)  Create a bar chart showing mean weight per diet
+
+2.  **Basic ggplot2**
+
+    a\) Make a scatter plot of weight vs. time with diet-specific colours\
+
+    b)  Create a line plot showing average weight over time for each diet\
+    c)  Generate a histogram of all weights with 15 bins\
+    d)  Make a boxplot of weights by diet with flipped coordinates
+
+3.  **Customizing ggplot2**
+
+    a\) Add a title "Chick Growth by Diet" and axis labels to any plot from Q2\
+
+    b)  Make points larger (size=3) and semi-transparent (alpha=0.6) in the scatter plot\
+    c)  Change line type to dashed in the line plot\
+    d)  Apply the **`theme_classic()`** to one of your plots
+
+4.  **Faceting**
+
+    a\) Create faceted histograms showing weight distributions per diet\
+
+    b)  Make a faceted scatter plot (time vs. weight) with one facet per chick\
+    c)  Add free y-scales to the faceted histograms
+
+5.  **Theme Customization**
+
+    a\) Create a custom theme that:
+
+    -   Has a light blue panel background
+    -   Uses bold, dark red axis titles
+    -   Removes minor grid line
+
+    b\) Apply this theme to your line plot from Q2
+
+6.  **Annotations**
+
+    a\) Add a text annotation at day 10, weight 150 saying "Growth Spurt"\
+
+    b)  Place a horizontal reference line at the overall mean weight\
+    c)  Highlight the maximum weight value with a point annotation

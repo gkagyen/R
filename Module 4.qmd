@@ -1,0 +1,779 @@
+---
+title: "50 Days Data Science"
+subtitle: "Module 4"
+author: "George K. Agyen"
+format: html
+editor: visual
+---
+
+## Day 16: Introduction Statistical Analysis
+
+### Introduction to Hypothesis Testing
+
+### What is Hypothesis Testing?
+
+Hypothesis testing is a statistical method to evaluate assumptions about a population based on sample data.
+
+### Key Terms:
+
+-   **Null Hypothesis (H₀):** No significant difference or relationship exists.
+-   **Alternative Hypothesis (H₁):** A significant difference or relationship exists.
+-   **p-value:** The probability of observing the data if the null hypothesis is true.
+    -   If `p-value < 0.05`, reject H₀ (significant result)
+
+### Types of Hypothesis Tests
+
+**Two-tailed test**: Tests whether the parameter is different from the specified value (≠)
+
+``` r
+# Let's create some sample data
+sample_data <- c(22, 25, 17, 24, 16, 29, 20, 23, 21, 18)
+
+# Our null hypothesis is that the population mean equals 20
+# Our alternative hypothesis is that it does not equal 20
+
+# We can perform a one-sample t-test
+t_test_result <- t.test(sample_data, mu = 20)
+
+# Display the results
+print(t_test_result)
+```
+
+**Left-tailed Test**: Tests whether the parameter is less than the specified value (\<)
+
+``` r
+# Our null hypothesis is that the population mean is greater or equals 20
+# Our alternative hypothesis is that it is less than 20
+
+# We can perform a one-tailed (left) t-test
+left_test_result <- t.test(sample_data, mu = 20, alternative = 'less')
+
+# Display the results
+print(left_test_result)
+```
+
+`alternative = 'less'` indicates a left tail test
+
+**Right-tailed test**: Tests whether the parameter is greater than the specified value (\>)
+
+``` r
+# Our null hypothesis is that the population mean is less or equals 20
+# Our alternative hypothesis is that it is greater than 20
+
+# We can perform a one-tailed (left) t-test
+right_test_result <- t.test(sample_data, mu = 20, alternative = 'greater')
+
+# Display the results
+print(right_test_result)
+```
+
+`alternative = 'greater'` indicates a right tailed test
+
+### p-Value
+
+`p-value` is the probability of observing the data if the null hypothesis is true. Typically has a boundary of `0.05` or `5%`
+
+``` r
+# Using our previous t-test
+t_test_result <- t.test(sample_data, mu = 20)
+
+# Look at the p-value
+p_value <- t_test_result$p.value
+cat("P-value:", p_value, "\n")
+
+# Interpret the result based on a significance level of 0.05
+if(p_value <= 0.05) {
+  cat("We reject the null hypothesis - there is enough evidence to suggest the mean differs from 20.\n")
+} else {
+  cat("We fail to reject the null hypothesis - there is not enough evidence to suggest the mean differs from 20.\n")
+}
+```
+
+### t-Test
+
+### 1-Sample t-Test
+
+Used to compare the mean of a sample to a known value
+
+``` r
+# Create sample data
+weight_loss <- c(2.1, 3.4, 2.5, 1.8, 3.2, 2.9, 4.1, 2.6, 3.1, 2.7)
+
+# We want to test if the mean weight loss exceeds 2 kg
+# H₀: Mean weight loss = 2 kg
+# H₁: Mean weight loss > 2 kg
+
+# Perform the one-sample t-test (right-tailed)
+t_test_result <- t.test(weight_loss, mu = 2, alternative = "greater")
+print(t_test_result)
+
+# Check if we reject the null hypothesis
+if(t_test_result$p.value < 0.05) {
+  cat("Results suggest the weight loss program leads 
+      to more than 2 kg loss on average.\n")
+} else {
+  cat("Results do not provide evidence that the weight 
+      loss program exceeds 2 kg on average.\n")
+}
+```
+
+### 2-Sample t-Test
+
+Used to compare the means of two independent groups
+
+``` r
+# Create two sample groups
+group_a <- c(25, 30, 28, 36, 29, 33, 31, 27)
+group_b <- c(21, 24, 27, 22, 26, 25, 23, 28)
+
+# We want to test if group_a has a higher mean than group_b
+# H₀: Mean of group_a = Mean of group_b
+# H₁: Mean of group_a > Mean of group_b
+
+# Perform an independent two-sample t-test
+t_test_result <- t.test(group_a, group_b, 
+                        alternative = "greater", var.equal = FALSE)
+print(t_test_result)
+
+# create a box plot to visualise the difference
+df <- tibble(
+  values = c(25, 30, 28, 36, 29, 33, 31, 27, 21, 24, 27, 22, 26, 25, 23, 28),
+  groups = factor(c(rep('Group A', length(group_a)), rep('Group B', length(group_b))))
+)
+ggplot(df, aes(groups, values, fill = groups)) +
+  geom_boxplot(show.legend = F) +
+  labs(title = 'Comparison of Group A and Group B',
+       x = 'Group',
+       y = 'Value') +
+  scale_fill_brewer(palette = 'Pastel1') +
+  theme_bw()
+```
+
+`var.equal = FALSE` uses Welch's t-test which does not assume equal variance
+
+### Paired t-Test
+
+Used when measurements are taken on the same subject before and after a treatment
+
+``` r
+ # Blood pressure measurements before and after treatment
+before_treatment <- c(142, 138, 145, 135, 140, 150, 148, 152)
+after_treatment <- c(135, 130, 140, 128, 135, 145, 140, 147)
+
+# We want to test if the treatment reduces blood pressure
+# H₀: Mean difference (before - after) = 0
+# H₁: Mean difference (before - after) > 0
+
+# Perform a paired t-test
+t_test_result <- t.test(before_treatment, after_treatment, 
+                         alternative = "greater", paired = TRUE)
+print(t_test_result)
+
+# Calculate and print the actual differences for clarity
+differences <- before_treatment - after_treatment
+cat("Individual differences (before - after):", differences, "\n")
+cat("Mean difference:", mean(differences), "\n")
+
+# Create a visualization of the paired data
+df <- tibble(
+  Patient_id = 1:length(before_treatment),
+  Before = before_treatment,
+  After = after_treatment
+)
+df_long <- df |> pivot_longer(
+  cols = !Patient_id,
+  names_to = 'Time',
+  values_to = 'Blood_Pressure'
+)
+ggplot(df_long, aes(Patient_id, Blood_Pressure, colour = Time)) +
+  geom_line(linewidth = 0.7) +
+  geom_point(size = 1.2) +
+  scale_color_manual(values = c("After" = "green4", "Before" = "tomato2")) +
+  labs(
+    title = "Before vs After Treatment",
+    x = "Patient",
+    y = "Blood Pressure"
+  ) +
+  theme_bw() +
+  theme(legend.title = element_blank()) +
+  guides(colour = guide_legend(reverse = TRUE))
+```
+
+### Chi-Square Test
+
+Used for categorical data analysis
+
+### Chi-Square Test of Independence
+
+This test determines if there is a significant association between two categorical variables
+
+``` r
+# Create a contingency table
+# Example: Testing if smoking is associated with lung disease
+lung_disease <- matrix(c(20, 80, 50, 50), nrow = 2, 
+                      dimnames = list(Smokes = c("Yes", "No"),
+                                      Disease = c("Yes", "No")))
+print(lung_disease)
+
+# Perform the chi-square test of independence
+chi_result <- chisq.test(lung_disease)
+print(chi_result)
+
+# Get expected frequencies
+expected <- chi_result$expected
+print("Expected frequencies:")
+print(expected)
+
+
+# Calculate and print the odds ratio for better interpretation
+odds_ratio <- (lung_disease[1,1] * lung_disease[2,2]) / (lung_disease[1,2] * lung_disease[2,1])
+cat("Odds ratio:", odds_ratio, "\n")
+cat("Interpretation: Smokers have", odds_ratio, "times the odds of developing lung disease compared to non-smokers.\n")
+
+library(ggmosaic)
+
+# Convert to data frame
+lung_df <- as.data.frame(as.table(lung_disease))
+
+ggplot(data = lung_df) +
+  geom_mosaic(aes(weight = n, x = product(Smokes), fill = Disease), colour = 'black') +
+  labs(title = "Association Between Smoking and Lung Disease", x = "Smokes", y = "Proportion") +
+  scale_fill_manual(values = c("skyblue", "coral")) +
+  theme_minimal()
+```
+
+### Chi-Square Goodness of Fit Test
+
+This test is to determine whether the observed frequency distribution matches an expected distribution
+
+``` r
+# Example: Testing if a die is fair
+# Observed frequencies when rolling a die 60 times
+observed <- c(5, 8, 15, 10, 12, 10)  # Counts for outcomes 1 through 6
+
+# Expected frequencies under the null hypothesis (fair die)
+# For a fair die with 6 sides rolled 60 times, each side should appear 10 times
+expected <- rep(10, 6)  # Each outcome should appear 10 times out of 60 rolls
+
+# Perform the chi-square test
+chi_result <- chisq.test(observed, p = expected/sum(expected))
+print(chi_result)
+
+# Create a bar plot to visualize the comparison
+df_dist <- tibble(Face = factor(rep(1:6, 2)),
+             Type = rep(c('observed','expected'), each = 6),
+             Frequecy = c(observed, expected))
+ggplot(data = df_dist, aes(x=Face, y = Frequecy, fill = Type)) +
+  geom_bar(position = 'dodge', stat = 'identity', colour = 'black') +
+  scale_fill_manual(values = c('skyblue', 'coral')) +
+  labs(title = "Observed vs Expected Die Roll Frequencies",
+       x = "Die Face",
+       y = "Frequency") +
+  theme_classic()
+```
+
+### Exercise
+
+-   Perform a 1-sample t-test to check if the average horsepower (`hp`) of `mtcars` is significantly different from 150.
+
+-   Perform a 2-sample t-test comparing `mpg` between cars with 4 and 8 cylinders.
+
+-   Use the `mtcars` dataset to test if `cyl` (cylinders) is independent of `am` (transmission type).
+
+## Day 17: F-Test and Analysis of Variance (ANOVA)
+
+### F-Test
+
+The F-test compares the variances of two groups to determine if they are significantly different. It’s often used as a preliminary step before a t-test (to check the equal variance assumption) or in ANOVA
+
+``` r
+# Create two sample groups
+method_a <- c(12, 15, 10, 13, 14, 16, 11, 13, 15, 12)
+method_b <- c(15, 14, 18, 15, 13, 16, 19, 14, 15, 17)
+
+# We want to test if the variances are different
+# H₀: Variance of method_a = Variance of method_b
+# H₁: Variance of method_a ≠ Variance of method_b
+
+# Calculate and print the standard deviations
+sd_a <- sd(method_a)
+sd_b <- sd(method_b)
+cat("Standard deviation of method A:", sd_a, "\n")
+cat("Standard deviation of method B:", sd_b, "\n")
+
+# Perform an F-test
+f_test_result <- var.test(method_a, method_b)
+print(f_test_result)
+
+# Create a visualization of the distributions
+# Create a visualization of the distributions
+df_method <- tibble(Method = rep(c('A','B'), each = 10),
+             Value = c(method_a, method_b))
+
+ggplot(df_method, aes(Method, Value)) +
+  geom_boxplot(fill = c('lightblue', 'lightgreen')) +
+  labs(title = 'Comparison of Variability Between Methods') +
+  theme_minimal()
+```
+
+### ANOVA (Analysis of Variance)
+
+Compares means across several groups to determine if at least one group differs significantly from the others.
+
+**One Way Anova**
+
+comparing means of a single category
+
+``` r
+# Create data for three treatment groups
+treatment_a <- c(25, 30, 28, 36, 29, 26, 31, 33, 24, 27)
+treatment_b <- c(34, 28, 38, 36, 32, 37, 39, 30, 33, 34)
+treatment_c <- c(40, 45, 38, 42, 37, 41, 39, 47, 43, 46)
+
+# Combine into a data frame
+data <- tibble(
+  value = c(treatment_a, treatment_b, treatment_c),
+  group = factor(rep(c("A", "B", "C"), each = 10))
+)
+
+# Look at the data structure
+print(data)
+
+# Perform an ANOVA
+anova_result <- aov(value ~ group, data = data)
+summary(anova_result)
+
+# Create a boxplot to visualize the differences
+ggplot(data, aes(x=group, y=value, fill = group)) +
+  geom_boxplot(show.legend = F) +
+  scale_fill_brewer(palette = 'Pastel1') +
+  labs(title = "Comparison of Treatment Groups", x = 'Treatment Group') +
+  theme_bw()
+```
+
+**checking Assumptions**
+
+``` r
+# NORMALITY CHECK --------------------- 
+# SHapiro-wilks test (H₀: Data is normally distributed)
+shapiro.test(treatment_a) 
+shapiro.test(data$value)
+
+# checking normality with Q-Q plot
+# Create Q-Q plot
+tibble(residuals = anova_result$residuals) |> 
+  ggplot( aes(sample = residuals)) +
+    stat_qq() +
+    stat_qq_line() +
+    labs(title = "Q-Q Plot of Residuals", 
+         x = "Theoretical Quantiles", y = "Sample Quantiles") +
+    theme_minimal()
+
+
+## HOMOGENITY OF VARIANCE ----------------------- 
+# Levene's Test (H₀: Data has equal variance)
+library(car)
+leveneTest(value ~ group, data = data)
+
+# Checking equal variance with residuals and fitted plot
+# Extract fitted and residuals values
+fitted <- anova_result$fitted.values
+residuals <- anova_result$residuals
+# Create residuals vs. fitted plot
+tibble(fitted, residuals) |> 
+  ggplot(aes(x = fitted, y = residuals)) +
+    geom_point(position = 'jitter') +
+    geom_hline(yintercept = 0, linetype = "dashed", colour = "red") +
+    labs(title = "Residuals vs. Fitted Values", 
+         x = "Fitted Values", y = "Residuals") +
+    theme_minimal()
+
+# INDEPENDENCE CHECK ----------------------------------
+# Create residuals vs. index plot
+tibble(index = 1:length(residuals), residuals) |> 
+  ggplot(aes(x = index, y = residuals)) +
+    geom_point() +
+    geom_line() +
+    labs(title = "Residuals vs. Observation Index", 
+         x = "Observation Index", y = "Residuals") +
+    theme_minimal()
+```
+
+**`Tukeys` Post-Hoc Test**
+
+This test is performed if the ANOVA results is significant. It shows which two groups are different from each other.
+
+``` r
+# For post-hoc analysis (if ANOVA is significant)
+tukey_result <- TukeyHSD(anova_result)
+print(tukey_result)
+```
+
+## Day 18: Introduction to Machine Learning
+
+### What is Machine Learning?
+
+Machine learning (ML) teaches computers to learn from data and make predictions or decisions without explicit programming. It’s widely used in data science.
+
+### Types of ML:
+
+1.  **Supervised Learning:** Uses labelled data (input-output pairs) to predict outcomes (e.g., regression, classification).
+
+2.  **Unsupervised Learning:** Finds patterns in unlabelled data (not covered here).
+
+3.  **Reinforcement Learning:** Learns by trial and error (not covered here).
+
+### ML Workflow
+
+The `caret` package together with other useful packages make workflow of ML very easy in R
+
+``` r
+# Install and load necessary packages
+pkg <- c('caret', 'randomForest', 'rpart', 'MASS', 'e1071', 'GGally','ROCR')
+install.packages(pkg)
+
+library(caret)
+library(rpart)
+library(rpart.plot)
+library(randomForest)
+library(MASS)
+library(e1071)
+library(ROCR)
+```
+
+**Step 1: Load Dataset**
+
+``` r
+data(iris)
+
+# Load the data you want to use for your ML model
+my_iris <- iris
+```
+
+**Step 2: Exploring/Preprocessing Data**
+
+Depending on the type of supervised learning (regression/classification) we might have to normalise or recode our data.
+
+``` r
+library(GGally) # for automatic pairwise plots
+
+# Explore data
+summary(my_iris)  # create summary
+sum(is.na(my_iris)) # check for missing values
+
+my_iris |> group_by(Species) |> 
+  summarise(mean_SL = mean(Sepal.Length),
+            stdev_SL = sd(Sepal.Length),
+            mean_SW = mean(Sepal.Width),
+            stdev_SW = sd(Sepal.Width),
+            mean_PL = mean(Petal.Length),
+            stdev_PL = sd(Petal.Length),
+            mean_PW = mean(Petal.Width),
+            stdev_PW = sd(Petal.Width))
+
+# make a pairwise plot to view distributions
+ggpairs(my_iris, aes(colour = Species, alpha = 0.6),
+        columns = 1:4, upper = list(continuous = wrap('cor', size = 3))) + theme_bw()
+
+# Recoding Species to 0 and 1
+# Create a dummyVars model for the Species variable
+# Set fullRank = FALSE to include all levels (no baseline drop), or TRUE to drop one level
+dummy_model <- dummyVars(~ Species, data = my_iris)
+# Transform the data using the dummyVars model
+encoded <- predict(dummy_model, newdata = my_iris)
+#Combine the other variables
+iris_encoded <- bind_cols(my_iris[ ,1:4], encoded)
+head(as_tibble(iris_encoded)) # view dummy variables
+
+# Normalise data for them to appear consistent for analysis
+# Some ML algorithms require this step
+prep_obj <- preProcess(iris[ ,1:4], method = "scale")
+scaled_iris <- predict(prep_obj, newdata = iris[ ,1:4])
+head(as_tibble(scaled_iris, 10))
+```
+
+**Step 3: Splitting Data**
+
+Partition data into training and testing sets with caret:
+
+``` r
+set.seed(100)  # For reproducibility 
+index <- createDataPartition(iris$Species, p = 0.75, list = FALSE) 
+train_data <- mtcars[index, ] 
+test_data <- mtcars[-index, ]
+```
+
+**Step 4: Build and Evaluate Model .... (more details below)**
+
+### Supervised Learning (Regression)
+
+### Linear Regression in R
+
+`lm()` function builds a linear regression model in R
+
+``` r
+# Syntax
+lm(response_var ~ predictor_var1 + predictor_var2, data = my_data)
+```
+
+**Objective:** Predict a `medv` (continuous outcome) using several predictors from the `Boston` data using regression.
+
+**Load in the Data**
+
+We use the `Boston` data from `MASS` package in R
+
+``` r
+# Load and Explore the data
+B_housing <- as_tibble(Boston)
+head(B_housing)
+```
+
+**Split Data and Build model**
+
+``` r
+# Split the data into training and testing sets
+set.seed(123)
+index <- createDataPartition(B_housing$medv, p = 0.75, list = FALSE)
+trainData <- mtcars[index, ]
+testData <- mtcars[-index, ]
+
+# Create a linear regression model using caret
+lm_model <- train(
+  mpg ~ wt + hp,
+  data = trainData,
+  method = "lm",
+  trControl = trainControl(method = "cv", number = 5)
+)
+
+# Print the model summary
+print(lm_model)
+summary(lm_model$finalModel)
+```
+
+**Make Predictions and Evaluate Performance**
+
+``` r
+# Make predictions on test data
+predictions <- predict(lm_model, newdata = testData)
+
+# Calculate RMSE and R-squared
+postResample(pred = predictions, obs = testData$medv)
+
+# Visualize results with ggplot2
+testData |> mutate(predictions = predictions) |>
+  ggplot(aes(x = predictions, y = medv)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1,
+              colour = "red", linetype = "dashed") +
+  labs(x = "Predicted Median House Value",
+       y = "Actual Median House value",
+       title = "Linear Regression: Predicted vs. Actual Medv") +
+  theme_minimal()
+
+# Visualize the relationship between weight and mpg with the regression line
+B_housing |> select(medv, dis, rm, lstat, tax) |> 
+  pivot_longer(cols = 2:5, values_to = 'values', names_to = 'predictors') |> 
+ggplot(aes(x=values, y=medv)) +
+  geom_point() + facet_wrap(~predictors, scales = 'free') +
+  theme_minimal()
+```
+
+### Exercises
+
+1.  Load the `penguins` dataset and view its first 5 rows with head().
+
+2.  Use `createDataPartition()` to split `penguins` into 80% training and 20% testing sets based on `Species`.
+
+3.  Print the number of rows in your training and testing sets using `nrow().`
+
+4.  Fit a linear model to predict `Sepal.Length` from `Petal.Length` using `iris training data`.
+
+5.  Make predictions on your `iris test set` and print the first 5 predicted values.
+
+6.  Evaluate your model with `postResample()` and note the `RMSE` (Root Mean Squared Error).
+
+## Day 19: Supervised Learning (Classification)
+
+**classification** models in ML are used to predict a categorical outcomes.
+
+### Logistic Regression
+
+predicts probabilities for binary outcomes using the logistic function. the `glm` function builds a logistic regression model when you specify `family='binomial'`
+
+``` r
+# Syntax
+glm(response_var ~ predictor_var1 + predictor_var2, 
+   data = my_data, family = 'binomial')
+```
+
+### Logistic Regression with `caret`
+
+**objective:** Use the `mtcars` data to predict whether a car has automatic or manual transition (`am`). We use the variables `wt` `hp` and `mpg` to predict `am`
+
+**Load and modify data**
+
+``` r
+# load data into new variable
+my_cars <- as_tibble(mtcars, rownames = NA)
+
+# convert am to a factor (0=automatic, 1=manual)
+my_cars <- my_cars |> mutate(
+  am = case_when(
+    am == 0 ~ 'Automatic',
+    am == 1 ~ 'Manual'
+  ),
+  am = as.factor(am)
+)
+my_cars$am
+```
+
+**Split Data and Build model**
+
+``` r
+# Split the data
+set.seed(222)
+train <- createDataPartition(mtcars$am, p = 0.7, list = FALSE)
+trainData <- mtcars[trainIndex, ]
+testData <- mtcars[-trainIndex, ]
+
+# Create a logistic regression model using caret
+logit_model <- train(
+  am ~ mpg + wt + hp,
+  data = trainData,
+  method = "glm",
+  family = "binomial",
+  trControl = trainControl(method = "cv", number = 5)
+)
+
+# Print the model summary
+print(logit_model)
+summary(logit_model$finalModel)
+```
+
+**Make Predictions**
+
+``` r
+# Make predictions on test data
+predictions <- predict(logit_model, 
+                       newdata = testData, type = "raw")
+print(predictions)
+
+# We can also get the predicted probablities rather than the classes
+# Get class probabilities
+prob_predictions <- predict(logit_model, 
+                            newdata = testData, type = "prob")
+print(prob_predictions)
+```
+
+**Model's Performance Evaluation**
+
+``` r
+
+# Calculate accuracy and create confusion matrix
+confMatrix <- confusionMatrix(predictions, testData$am)
+print(confMatrix)
+
+# Use predicted  probabilities for plotting
+results_df <- tibble(
+  actual = testData$am,
+  probability = prob_predictions$Manual
+)
+
+# Plot probabilities by actual class
+ggplot(results_df, aes(x = actual, y = probability, color = actual)) +
+  geom_jitter(width = 0.2, height = 0, size = 3, alpha = 0.7) +
+  labs(x = "Actual Transmission Type", y = "Predicted Probability of Manual", 
+       title = "Logistic Regression: Predicted Probabilities by Class") +
+  theme_minimal() +
+  scale_color_manual(values = c("Automatic" = "blue", "Manual" = "red"))
+
+#Plot an ROC curve
+```
+
+We can further estimate the models performance using the area under an ROC curve from the model
+
+``` r
+library(ROCR)
+
+#Create prediction object
+prediction_obj <- prediction(
+  prob_predictions$Manual, 
+  testData$am,
+  label.ordering = c('Manual', 'Automatic'))
+
+#Generate performance measures (TPR and FPR for the ROC curve)
+performance_obj <- performance(prediction_obj, 
+                               measure = "tpr", x.measure = "fpr")
+
+#Extract TPR and FPR from the performance object
+roc_data <- tibble(
+  FPR = performance_obj@x.values[[1]],
+  TPR = performance_obj@y.values[[1]]
+)
+
+#Calculate the AUC
+auc <- performance(prediction_obj, measure = "auc")
+auc_value <- auc@y.values[[1]]
+#Plot ROC Curve using ggplot2
+ggplot(roc_data, aes(x = FPR, y = TPR))+
+  geom_line(colour='coral', linewidth=1) + 
+  geom_abline(linetype = 2, colour='grey15') +  #draws diagonal line
+  labs(title="Receiver Operating Characteristic Curve",
+       subtitle = paste("Area Under Curve is", round(auc_value,2)),
+       x = "False Positive Rate",
+       y = "True Positive Rate") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust=0.5),
+        plot.subtitle = element_text(hjust=0.5))
+```
+
+### Exercises
+
+1.  Load the Pima Indians Diabetes data (`pima`) from the `pdp` package into your environment. make sure to install the `pdp` package first.
+
+2.  Split `PimaIndiansDiabetes` data into 75% training and 25% testing sets, then train a logistic model to predict `diabetes`.
+
+3.  Create a pairwise plot to determine the best predictor variables to use for predicting `diabetes`
+
+4.  Train your model on the training data and make predictions on your test set and view the first 5 predicted classes.
+
+5.  Use `confusionMatrix()` to evaluate your model. What’s the accuracy? Is the accuracy reliable?
+
+6.  Make and **ROC** plot to check the ability of the model to classify correctly.
+
+## Day 20: Break Day Mini Project
+
+### Take a Break!
+
+Congratulations on completing 20 days of learning R! Take some time to relax and review what you’ve learned.
+
+### Stats & ML Mini Project 
+
+This mini project is designed to test your understanding through a realistic healthcare analytics scenario using the **Pima Indians diabetes** dataset `pima` from the `pdp` package.
+
+### Overview
+
+**Objective:** Analyse diabetes risk factors using statistical methods and build a predictive model
+
+**Part 1 Statistical Analysis**
+
+1.  Clean the dataset and perform some EDA on the dataset
+2.  Perform Some hypothesis tests
+    -   perform a t-test to compare mean glucose- levels between diabetic/non-diabetic groups
+    -   conduct a chi-square test between diabetes and hypertension (pressure \> 90)
+    -   run a one-way ANOVA comparing BMI across age groups (create age categories)
+3.  Create 3 plots using ggplot2 showing
+    -   Boxplot of insulin by diabetes status
+    -   Bar plot of diabetes prevalence by `age_group`
+    -   scatterplot of `glucose` v `mass`
+
+**Part 2 - Machine Learning**
+
+1.  Perform a Linear regression to predict bmi (`mass`) using:
+    -   `glucose` and `insulin` only
+    -   `glucose`, `pressure` and `age`
+    -   make predictions with the two models and compare their evaluation metrics (R-squared, MAE and RMSE)
+2.  Build a diabetes classifier (logistic regression model) using:
+    -   `glucose` and `insuling` only
+    -   predictors from the regression models that were significant
+    -   make predictions on the test data and evaluate performance using a confusion matrix

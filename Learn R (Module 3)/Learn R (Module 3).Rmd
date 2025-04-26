@@ -1,0 +1,541 @@
+---
+title: "End of Module Quiz (Module 3)"
+output: learnr::tutorial
+runtime: shiny_prerendered
+description: "50 Days Data Science Course"
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tibble)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Day 1: Introduction to R
+
+### Question 1
+
+```{r designers }
+question("Who were the primary designers of the R language?",
+  answer("Guido van Rossum"),
+  answer("Ross Ihaka and Robert Gentleman", correct = TRUE),
+  answer("John Chambers"),
+  answer("Hadley Wickham"),
+  incorrect = "R was created by Ross Ihaka and Robert Gentleman at the University of Auckland."
+)
+```
+
+### Question 2
+
+```{r download }
+question("Where can you download the base R software?",
+  answer("From Microsoft's website"),
+  answer("From the Comprehensive R Archive Network (CRAN)", correct = TRUE),
+  answer("From GitHub only"),
+  answer("From the Python Package Index (PyPI)"),
+  incorrect = "R can be downloaded from the Comprehensive R Archive Network (CRAN) at https://cran.r-project.org/"
+)
+```
+
+### Question 3
+
+```{r RStudio }
+question("Which of these is NOT a pane in the RStudio interface?",
+  answer("Source"),
+  answer("Console"),
+  answer("Environment"),
+  answer("Command Prompt", correct = TRUE),
+  incorrect = "RStudio has Source, Console, Environment, and other panes but not a 'Command Prompt' pane."
+)
+```
+
+### Question 4
+
+```{r comments }
+question("How do you create a single-line comment in R?",
+  answer("Using /* at the start and */ at the end"),
+  answer("Using // at the start of the line"),
+  answer("Using # at the start of the line", correct = TRUE),
+  answer("Using <!-- at the start and --> at the end"),
+  incorrect = "In R, single-line comments start with #."
+)
+```
+
+### Question 5
+
+```{r assignment }
+question("Which of these is a valid variable assignment in R?",
+  answer("3my_var <- 10"),
+  answer("my_var <- 10", correct = TRUE),
+  answer("my-var = 10"),
+  answer("_my_var = 10"),
+  incorrect = "Valid variable names can't start with numbers or symbols (except .), and <- is the preferred assignment operator."
+)
+```
+
+### Question 6
+
+```{r arithmetic }
+question("What is the result of 2^3 + 5 %% 2 in R?",
+  answer("8"),
+  answer("9", correct = TRUE),
+  answer("8.5"),
+  answer("Error"),
+  incorrect = "2^3 is 8, and 5 %% 2 (modulus) is 1, so 8 + 1 = 9."
+)
+```
+
+### Question 7: Printing your name
+
+Run the following code in the console by replacing `[your name]` with your actual name:
+
+```{r name-print, exercise = TRUE }
+print("My name is [your name]")
+
+```
+
+
+### Question 7: Printing your name
+
+Calculate the following and write down the results:
+
+a) $12 + 7$  
+b) $\frac{20}{4}$  
+c) $3\times9$
+
+```{r calculation, exercise = TRUE}
+
+```
+
+
+## Day 2: Data Types and Structures
+
+### Multichoice Questions
+
+```{r day2quiz }
+quiz(caption = "Choose the correct answer from the provided options",
+  question("Which data type would 3.14 be classified as in R? ",
+    answer("Integer"),
+    answer("Numeric", correct = TRUE),
+    answer("Character"),
+    answer("Logical"),
+    incorrect = "Decimal numbers are numeric by default in R."
+  ),
+
+  question_checkbox("How would you explicitly create an integer value 5 in R? (Select all correct answers)",
+    answer("5"),
+    answer("5L", correct = TRUE, message = 'You can use as.integer()'),
+    answer("as.numeric(5)"),
+    answer("as.integer(5)", correct = TRUE, message = 'You can also use an L suffix'),
+    incorrect = "You can create an integer with the L suffix or using as.integer()."
+  ),
+
+  question("Which function would you use to check the structure of a data frame?",
+    answer("summary()"),
+    answer("str()", correct = TRUE),
+    answer("typeof()"),
+    answer("class()"),
+    incorrect = "str() displays the structure of an object, including data frames."
+  ),
+
+  question("What is the main difference between a matrix and a data frame in R?",
+    answer("Matrices can only store numeric values"),
+    answer("Data frames can store different types in different columns", correct = TRUE),
+    answer("Matrices have row names"),
+    answer("Data frames cannot have column names"),
+    incorrect = "Data frames can have columns of different types, while matrices must have all elements of the same type."
+  ),
+
+  question("Which of these creates a list containing a numeric vector and a character string?",
+    answer("list(1:3, 'hello')", correct = TRUE),
+    answer("c(1:3, 'hello')"),
+    answer("data.frame(1:3, 'hello')"),
+    answer("matrix(c(1:3, 'hello'))"),
+    incorrect = "Lists can contain elements of different types and lengths."
+  ),
+
+  question("What is a tibble in R?",
+    answer("A special type of matrix"),
+    answer("A modern reimagining of the data frame", correct = TRUE),
+    answer("A graphical object"),
+    answer("A type of list"),
+    incorrect = "Tibbles are part of the tidyverse and are enhanced data frames with better printing and subsetting behavior."
+  )
+)
+```
+
+### Question 1
+Create a vector of numbers from 1 to 10
+
+```{r numvec, exercise = TRUE}
+
+```
+
+### Question 2
+Create a matrix with 3 rows and 3 columns
+
+```{r matrix, exercise = TRUE}
+
+```
+
+### Question 3
+Create a character vector with 3 names and access the 2nd name.
+
+```{r charvec, exercise = TRUE}
+
+
+```
+
+### Question 4
+Build a data frame with 2 columns: `*fruit*` (e.g., *"apple"*, *"banana"*) and `price` (e.g., *1.5*, *0.8*).
+
+```{r dataframe, exercise = TRUE}
+
+```
+
+### Question 5
+Create a tibble with 3 columns: `name`, `age`, and `gender`
+
+```{r tibble, exercise = TRUE}
+
+```
+
+### Question 6
+Use the `class()` function to check the type of each object you created
+
+```{r inspect, exercise = TRUE}
+
+```
+
+## Day 3: Functions Loops and Conditions
+
+```{r day3quiz }
+quiz( caption = 'Choose the right answer from the provided options',
+  question("How do you define a custom function in R?",
+    answer(sprintf("`function my_fun() \n{ ... }`")),
+    answer("`my_fun <- function() { ... }`", correct = TRUE),
+    answer("`def my_fun(): ...`"),
+    answer("`function = my_fun() { ... }`"),
+    incorrect = "The correct syntax is `my_fun <- function() { ... }`"
+  ),
+
+  question("Which built-in function would you use to get the mean of a numeric vector?",
+    answer("avg()"),
+    answer("mean()", correct = TRUE),
+    answer("average()"),
+    answer("median()"),
+    incorrect = "The mean() function calculates the arithmetic mean."
+  ),
+
+  question("What is the output of this for loop?\nfor(i in 1:3) { print(i^2) }",
+    answer("1 9 16"),
+    answer("1\n4\n9", correct = TRUE),
+    answer("1, 4, 9"),
+    answer("3"),
+    incorrect = "The loop prints the square of 1, 2, and 3 on separate lines."
+  ),
+
+  question("Which statement correctly implements an if-else condition in R?",
+    answer("`if (x > 0)` { 'positive' } else { 'negative' }", correct = TRUE),
+    answer("`if x > 0` then 'positive' else 'negative'"),
+    answer("`when x > 0` ~ 'positive' else ~ 'negative'"),
+    answer("`x > 0` ? 'positive' : 'negative'"),
+    incorrect = "The correct syntax uses if () {} else {} structure."
+  ),
+
+  question("What does this while loop do?\n`x <- 1`\n`while(x < 5) { x <- x + 1 }`",
+    answer("Creates an infinite loop"),
+    answer("Increments x until it reaches 5", correct = TRUE),
+    answer("Prints numbers 1 through 5"),
+    answer("Throws an error"),
+    incorrect = "The loop increments x from 1 to 4, stopping when x reaches 5."
+  ),
+
+  question("Which function allows you to apply a function to each element of a vector?",
+    answer("apply()"),
+    answer("lapply()", correct = TRUE),
+    answer("loop()"),
+    answer("map()"),
+    incorrect = "lapply() applies a function to each element of a list or vector."
+  )
+)
+```
+
+### Question 1
+Write a `function` that takes **two numbers** as input and returns their **product**. Test it with 4 and 6.
+
+```{r rfunction, exercise = TRUE }
+
+```
+
+### Question 2
+Use a `for` loop to print the numbers from `1 to 10`.
+
+```{r forloop, exercise = TRUE }
+
+```
+
+### Question 3
+Use a `for` loop to print the numbers `1 – 5 squared`
+
+```{r forloop2, exercise = TRUE }
+
+```
+
+### Question 4
+Write an `if-else` statement to check if a number is odd 
+
+```{r ifelse, exercise = TRUE }
+
+```
+<div id="ifelse-hint">
+**Hint:** hint: use `%%` for remainder, e.g., `4 %% 2 is 0`.
+</div>
+
+
+## Day 4: Exploratory Data Analysis
+
+```{r day4quiz }
+quiz(caption = 'Choose the right answer from the provided options',
+     question("How do you load the built-in mtcars dataset in R?",
+  answer("load(mtcars)"),
+  answer("data(mtcars)", correct = TRUE),
+  answer("import(mtcars)"),
+  answer("get_data('mtcars')"),
+  incorrect = "The data() function loads built-in datasets."
+  ),
+
+question("Which function provides a statistical summary of a data frame?",
+  answer("describe()"),
+  answer("summary()", correct = TRUE),
+  answer("info()"),
+  answer("stats()"),
+  incorrect = "summary() provides min, max, quartiles, mean, etc. for each column."
+  ),
+
+question("What does the head() function do?",
+  answer("Displays the first few rows of a data frame", correct = TRUE),
+  answer("Shows column names"),
+  answer("Displays the last few rows"),
+  answer("Calculates column sums"),
+  incorrect = "head() shows the first 6 rows by default."
+  ),
+
+question("Which plot would best show the relationship between two numeric variables?",
+  answer("Bar plot"),
+  answer("Histogram"),
+  answer("Scatter plot", correct = TRUE),
+  answer("Box plot"),
+  incorrect = "Scatter plots visualize relationships between two numeric variables."
+  ),
+
+question("What does this code do?\nplot(mtcars$mpg, mtcars$hp, main='MPG vs HP')",
+  answer("Creates a scatter plot of mpg vs hp with a title", correct = TRUE),
+  answer("Makes a line graph of mpg and hp"),
+  answer("Creates two histograms"),
+  answer("Generates a bar plot"),
+  incorrect = "plot() with two numeric vectors creates a scatter plot, and main adds a title."
+  ),
+
+question("Which function would you use to count the number of rows in a data frame?",
+  answer("count()"),
+  answer("length()"),
+  answer("nrow()", correct = TRUE),
+  answer("dim()"),
+  incorrect = "nrow() returns the number of rows in a data frame."
+  )
+)
+
+```
+
+### Question 1
+Load the `iris` dataset and use `head()` to view it's first 15 rows.
+
+```{r loaddata, exercise = TRUE }
+
+```
+
+### Question 2
+Compute the summary statistics for the `Sepal.Length` column in `iris`. 
+
+```{r datasummary, exercise = TRUE }
+
+```
+
+### Question 3
+Create a scatter plot of `Sepal.Length` vs `Sepal.Width` from `iris`. Add a title and labels
+
+```{r scatterplot, exercise = TRUE }
+
+```
+
+### Question 4
+Create a boxplot of `Petal.Length` from the `iris` dataset
+
+```{r boxplot, exercise = TRUE }
+
+```
+
+## Practice Exercises
+
+### Introductory Exercises
+
+#### **Basic Arithmetic**
+Calculate the sum of 15 and 27, then multiply the result by 3
+```{r arisum, exercise = TRUE}
+
+```
+
+#### **Variable Assignment**
+Create a variable called `radius` and assign it the value 5. Then calculate the area of a circle with this radius **(area = πr²)**. Use `pi` for π.
+```{r varsign, exercise = TRUE}
+
+```
+
+#### **Commenting code**
+Create a variable `price` with value 99.99 and add a comment to explain that the value is a product price in dollars.
+```{r commentcode, exercise = TRUE}
+
+```
+
+#### **Multiple variables**
+Create three variables: `x` with value 10, `y` with value 20, and `z` that contains the sum of `x` and `y`
+```{r multivar, exercise = TRUE}
+
+```
+
+#### **Basic functions**
+Calculate the square root of 81 using the `sqrt()` function and store it in a variable called `result`
+```{r basfun, exercise = TRUE}
+
+```
+
+### Exercises on Data Types and Structure
+
+#### **Vector creation**
+Create a **numeric vector** called `temps` containing the values 72, 68, 75, 80, 77.
+```{r vecreate, exercise = TRUE}
+
+```
+
+#### **Type conversion**
+Create a **character vector** `nums` with values `'1', '2', '3'`, then convert it to a **numeric vector** called `real_nums`
+```{r typeconv, exercise = TRUE}
+
+```
+
+#### **Matrix creation**
+Create a 2x3 matrix called `mat` with numbers 1 through 6, filled by row.
+```{r matcreate, exercise = TRUE}
+
+```
+
+#### **Data frame creation**
+Create a data frame with the `tibble()` function called `students` with columns: `name` (Alice, Grace, Will, Jake, Helen, John, Denver, Bob, Ashley, Carol) and `grade` (85, 92, 88, 71, 67, 89, 99, 80, 78, 90)
+```{r tibbledf, exercise = TRUE}
+
+```
+
+#### **List operation**
+Create a **list** called `person` with elements: `name` (your name), `age` (your age), and `scores` (a numeric vector containing values 85, 90, 78)
+```{r listop, exercise = TRUE}
+
+```
+
+### Exercises on Functions Loops and Conditions
+
+#### **Simple function**
+Create a **function** called `square` that takes ***one argument*** `x` and returns its square
+```{r simplefun, exercise = TRUE}
+
+```
+
+#### **For loop**
+Use a for loop to print the square of each number from 1 to 5 (each on a new line)
+```{r usefor, exercise = TRUE}
+
+```
+
+#### **If-Else condition**
+Write code that checks if a variable `temperature` (set to 75) is above 80. If true, print **'Hot'**, otherwise print **'Pleasant'**
+```{r useifelse, exercise = TRUE}
+
+```
+
+#### **While loop**
+Use a while loop to print numbers from 1 to 5 (each on a new line). Initialize a counter variable first
+```{r usewhile, exercise = TRUE}
+
+```
+<div id="usewhile-hint">
+**Hint:** don't forget to increment the counter.
+</div>
+
+#### **Function with default argument**
+Create a function `greet` that takes a `name` argument with default as `'Guest'` and returns a string **'Hello, [name]!'**
+```{r fundefarg, exercise = TRUE}
+
+```
+<div id="fundefarg-hint">
+**Hint:** use `paste()` to combine strings.
+</div>
+
+### Exercises on Exploratory Data Analysis
+
+#### **Loading built in data**
+Load the built-in `Seatbelts` dataset (UK Road Casualties) and convert it to a data frame called `safety_data`. **Note**: This data is a time series `(mts/ts)` object
+```{r tsdataload, exercise = TRUE}
+
+```
+
+```{r tsdataload-hint}
+as.data.frame(Seatbelts)
+as_tibble(Seatbelts)
+```
+
+#### **Exploring the data**
+For the `safety_data` you just created, show the summary statistics for the columns `DriversKilled` and `front` *(front seat passengers killed)* only. Do this with one line of code.
+```{r explordata, exercise = TRUE}
+
+```
+
+#### **Air quality data**
+Load the `airquality` dataset *(New York Air Quality Measurements)* and create a new tibble called `summer_air` containing only June, July and August data (Month = 6,7,8)
+```{r airqualidata, exercise = TRUE}
+
+```
+<div id="airqualidata-hint">
+**Hint:** use `%in%` operator to match multiple values.
+</div>
+
+#### **Missing values**
+For the `airquality` dataset, calculate how many missing values `(NA)` are in the `Ozone` column.
+```{r missingvalues, exercise = TRUE}
+
+```
+
+#### **Plotting data**
+Using the `safety_data` you created, create a line plot of `DriversKilled` over time **(use the row numbers as x-axis)**. Add a title 'UK Road Casualties' and make the line colour `salmon2`.
+```{r plotts, exercise = TRUE}
+
+```
+
+#### **Aggregating data**
+Using the `airquality` data, calculate the mean Solar.R value for each month `(Month)`. Exclude `NA` values.
+```{r aggregatemean, exercise = TRUE}
+
+```
+<div id="aggregatemean-hint">
+**Hint:** use the `aggregate()` function to do this
+</div>
+
+
+
+
+
+
+
+
+
+
+

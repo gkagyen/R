@@ -1,0 +1,406 @@
+---
+title: "50 Days Data Science"
+subtitle: "Module 3"
+author: "George K. Agyen"
+format: html
+editor: visual
+---
+
+# Day 1: Introduction to R & Environment Setup
+
+## What is R?
+
+R is a powerful programming language and environment specifically designed for statistical computing, data analysis, and visualization. It is widely used in academia, industry, and research for tasks like data manipulation, statistical modelling, and creating graphs.
+
+## Why Learn R?
+
+-   **Open Source**: R is free to use and has a large community of users.
+
+-   **Data Analysis**: R is built for data analysis and has extensive libraries for statistics and machine learning.
+
+-   **Visualization**: R has excellent tools for creating high-quality graphs and plots.
+
+-   **Community Support**: R has a large and active community, so help is always available.
+
+## Step 1: Install R
+
+1.  Go to the official R website: <https://www.r-project.org/>.
+
+2.  Click on "Download R" and select a mirror site close to your location.
+
+3.  Download and install the version of R suitable for your operating system (Windows, macOS, or Linux).
+
+## Step 2: Install RStudio (Optional but Recommended)
+
+RStudio is an Integrated Development Environment (IDE) that makes working with R much easier. It provides a user-friendly interface for writing code, managing files, and viewing plots.
+
+1.  Go to the RStudio website: <https://www.rstudio.com/>.
+
+2.  Download the free version of RStudio Desktop.
+
+3.  Install RStudio on your computer.
+
+## Step 3: Explore the R Environment
+
+1.  Open RStudio (or the R console if you didn’t install RStudio).
+
+2.  Familiarize yourself with the interface:
+
+    -   **Console**: Where you type and execute R commands.
+
+    -   **Script Editor**: Where you write and save your R scripts (File \> New File \> R Script).
+
+    -   **Environment/History**: Shows variables and command history.
+
+    -   **Plots/Help**: Displays graphs and documentation.
+
+## Step 4: Write Your First R Program
+
+In the console, type the following command and press Enter:
+
+``` r
+print("Hello, World!")
+```
+
+You should see the output:
+
+```         
+[1] "Hello, World!"
+```
+
+Congratulations! You’ve written your first R program.
+
+## Step 5: Learn Basic Commands
+
+``` r
+# Basic arithmetic 
+2 + 3 
+5 * 4  
+
+# Assigning values to variables 
+x <- 10 
+y <- 20 
+x + y  
+
+# Getting help 
+?print
+```
+
+## Day 1 Challenge
+
+1.  Install R and RStudio on your computer.
+
+2.  Write a program that calculates the sum of two numbers and prints the result.
+
+3.  Explore the RStudio interface and try running a few basic commands.
+
+------------------------------------------------------------------------
+
+# Day 2: Data Types & Data Structures in R
+
+## Data Types in R
+
+R supports several basic data types:
+
+-   **Numeric**: Numbers (e.g., `10`, `3.14`).
+
+-   **Integer**: Whole numbers (e.g., `5L`).
+
+-   **Character**: Text (e.g., `"Hello"`).
+
+-   **Logical**: Boolean values (`TRUE` or `FALSE`).
+
+-   **Complex**: Complex numbers (e.g., `1 + 2i`).
+
+You can check the type of a variable using the `class()` function or the `typeof()` function:
+
+``` r
+x <- 10 
+class(x)  # Output: "numeric"
+
+y <- "Rock"
+z <- TRUE
+c <- 5 - 3i
+```
+
+`<-` is called an assignment operator, it stores a value in a variable
+
+## Data Structures in R
+
+R has several data structures to store and manipulate data:
+
+1.  **Vectors**: A sequence of elements of the same type.
+
+    ``` r
+    vec <- c(1, 2, 3, 4, 5)              # numeric vector
+    words <- c('cat', 'dog', 'mouse')    # character vector
+    print(vec)
+    vec[2]                               # access 2nd element: 2
+    ```
+
+    `c()`: Combines values into a vector. Takes multiple arguments separated by commas. `[2]`: Indexing; extracts the 2nd element (R starts counting at 1).
+
+2.  **Matrices**: A 2D array of elements of the same type.
+
+    ``` r
+    mat <- matrix(c(1, 2, 3, 4), nrow = 2, ncol = 2)
+    ```
+
+3.  **Lists**: A collection of elements that can be of different types.
+
+    ``` r
+    my_list <- list("apple", 10, TRUE)
+    print(my_list)
+    my_list[[2]]                           # access 2nd element: 10
+    ```
+
+4.  **Data Frames**: A table-like structure with rows and columns (similar to Excel sheets).
+
+    ``` r
+    df <- data.frame(name = c("Alice", "Bob"), age = c(25, 30))
+    print(df)
+    ```
+
+5.  **Factors**: Used for categorical data.
+
+    ``` r
+    factor_data <- factor(c("Male", "Female", "Male"))
+    ```
+
+## Day 2 Challenge
+
+1.  Create a vector of numbers from 1 to 10.
+
+2.  Create a matrix with 3 rows and 3 columns.
+
+3.  Create a data frame with columns `name`, `age`, and `gender`.
+
+4.  Use the `class()` function to check the type of each object you created.
+
+------------------------------------------------------------------------
+
+# Day 3: Functions, Loops, & Conditionals
+
+## Functions in R
+
+Functions are reusable blocks of code that perform a specific task. You can create your own functions using the `function()` keyword.
+
+``` r
+# Define a function 
+add_numbers <- function(a, b) {   
+  return(a + b) 
+  }  
+
+# Call the function 
+result <- add_numbers(5, 10) 
+print(result)                 # Output: 15
+```
+
+## Loops in R
+
+Loops are used to repeat a block of code. The two main types of loops in R are `for` and `while`.
+
+1.  **For Loop**:
+
+    ``` r
+    numbers <- c(1, 2, 3)
+    for (i in numbers) {   
+      print(i * 3) 
+      }
+    ```
+
+2.  **While Loop**:
+
+    ``` r
+    x <- 1 
+    while (x <= 5) {   
+      print(x)   
+      x <- x + 1 
+      }
+    ```
+
+## Conditionals in R
+
+Conditionals are used to make decisions in your code. The most common conditional statement is `if-else`.
+
+``` r
+x <- 10 
+if (x > 5) {   
+  print("x is greater than 5") 
+} else {   
+    print("x is less than or equal to 5") 
+  }
+```
+
+You can chain several conditions using the `elsif` function between `if` and `else` statements
+
+We can also combine conditional loops with functions
+
+``` r
+# Example of a custom function to generate password----------------
+generate_password <- function(length = 12, use_special = TRUE) {
+  chars <- c(letters, LETTERS, 0:9)
+  if(use_special) chars <- c(chars, c("!", "@", "#", "$", "%", "&"))
+  
+  paste0(sample(chars, length, replace = TRUE), collapse = "")
+}
+
+# Usage:
+generate_password(10)  # Random 10-character password
+generate_password(16, FALSE)  # No special characters
+
+
+# Example function to classify BMI--------------------------------
+classify_bmi <- function(weight_kg, height_m) {
+  bmi <- weight_kg / (height_m^2)
+  
+  if(bmi < 18.5) {
+    category <- "Underweight"
+  } else if(bmi <= 25) {
+    category <- "Normal weight"
+  } else if(bmi <= 30) {
+    category <- "Overweight"
+  } else {
+    category <- "Obese"
+  }
+  
+  list(BMI = round(bmi, 1), Category = category)
+}
+
+# Usage:
+classify_bmi(70, 1.75)
+
+
+# Example function to play Rock Paper Scissors game-------------
+rps_game <- function() {
+  choices <- c("rock", "paper", "scissors")
+  computer <- sample(choices, 1)
+  player <- tolower(readline("Choose rock, paper, or scissors: "))
+  
+  if(!player %in% choices) {
+    return("Invalid choice!")
+  }
+  
+  cat("Computer chose:", computer, "\n")
+  
+  if(player == computer) {
+    return("It's a tie!")
+  } else if(
+    (player == "rock" & computer == "scissors") |
+    (player == "paper" & computer == "rock") |
+    (player == "scissors" & computer == "paper")
+  ) {
+    return("You win!")
+  } else {
+    return("Computer wins!")
+  }
+}
+
+# Usage:
+rps_game()
+```
+
+### Day 3 Challenge
+
+1.  Write a function that takes two numbers as input and returns their product.
+
+2.  Use a `for` loop to print the numbers from 1 to 10.
+
+3.  Write an `if-else` statement to check if a number is even or odd.
+
+------------------------------------------------------------------------
+
+# Day 4: Exploratory Data Analysis (EDA) in R
+
+## What is EDA?
+
+Exploratory Data Analysis (EDA) is the process of summarizing and visualizing data to understand its structure, patterns, and relationships.
+
+### Step 1: Load a Dataset
+
+``` r
+data(mtcars) 
+head(mtcars)  # View the first few rows
+```
+
+### Step 2: Summarize the Data
+
+``` r
+summary(mtcars)
+```
+
+### Step 3: Visualize the Data
+
+``` r
+plot(mtcars$mpg, mtcars$hp, main = "MPG vs HP", xlab = "MPG", ylab = "HP")
+```
+
+### Day 4 Challenge
+
+1.  Load the `iris` dataset using `data(iris)`.
+
+2.  Use the `summary()` function to explore the dataset.
+
+3.  Create a scatter plot of `Sepal.Length` vs `Petal.Length`.
+
+------------------------------------------------------------------------
+
+# Day 5: Break Day & Coding Challenge
+
+## Take a Break!
+
+Congratulations on making it through the first four days! Take some time to relax and review what you’ve learned so far.
+
+## Coding Challenge
+
+To test your skills, try solving the following problem:
+
+1.  **Create a function that takes a vector of numbers and returns the mean and standard deviation, the maximum value and the minimum value**
+
+2.  Test the function in 1. above with your own vector of 12 numbers
+
+3.  **Create a scatter plot of your numbers (hint: use the index of the numbers on the x-axis, and the actual numbers on the y-axis)**
+
+4.  **Use a loop to print the multiplication table of a number (e.g., 5). up to the 20th level**
+
+5.  Load the `diamonds` dataset and create a boxplot of the weight of the diamond (`carat`) grouped by the quality of cut (`cut`)
+
+### Sample Solution
+
+``` r
+# Function to calculate mean, standard deviation, max, and
+stats_function <- function(numbers) {
+  mean_val <- mean(numbers)
+  sd_val <- sd(numbers)
+  max_val <- max(numbers)
+  min_val <- min(numbers)
+  return(list(mean = mean_val, sd = sd_val, max = max_val, min = min_val))
+}
+
+# Create a vector of 12 numbers
+my_numbers <- c(5, 12, 8, 20, 15, 7, 10, 25, 30, 18, 3, 6)
+
+# Test the function
+results <- stats_function(my_numbers)
+print(results)
+
+
+# Scatter plot using the index as x-axis and the numbers as y-axis
+plot(1:length(my_numbers), my_numbers, 
+     type = "p", col = "blue",
+     xlab = "Index", ylab = "Numbers", 
+     main = "Scatter Plot of Numbers",
+     pch = 20)
+
+# Multiplication table of a number, e.g., 5, up to the 20th level
+number <- 5
+for (i in 1:20) {
+  cat(number, "x", i, "=", number * i, "\n")
+}
+
+
+# Bar plot of the number of cylinders in mtcars data
+boxplot(carat ~ cut, data = diamonds, col = "tomato",
+        xlab = "Diamond Quality", ylab = "Weight of Diamond (Carat)",
+        main = "Distribution of Diamond Quality by Carat")
+```

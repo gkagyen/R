@@ -1,0 +1,392 @@
+---
+title: "End of Module Quiz (Module 6)"
+output: learnr::tutorial
+runtime: shiny_prerendered
+description: "50 Days Data Science Course"
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(stringr)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(janitor)
+library(mice)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Day 6: Introduction to Data Cleaning
+
+### Multichoice questions
+
+```{r day6quiz }
+quiz(
+  caption = "Choose the correct answer from the provided options",
+  question("Which function would you use to get a quick overview of missing values in your data frame?",
+  answer("summary()", correct = TRUE),
+  answer("plot()"),
+  answer("mean()"),
+  answer("filter()"),
+  incorrect = "The summary() function provides statistics including NA counts for each column."
+),
+
+question("What does the is.na() function return when applied to a vector?",
+  answer("The mean of the vector"),
+  answer("A logical vector indicating NA positions", correct = TRUE),
+  answer("The number of missing values"),
+  answer("A cleaned version of the vector"),
+  incorrect = "is.na() returns TRUE/FALSE values indicating missing data positions."
+),
+
+question("How would you identify duplicate rows in a data frame?",
+  answer("duplicated(df)", correct = TRUE),
+  answer("unique(df)"),
+  answer("distinct(df)"),
+  answer("drop_duplicates(df)"),
+  incorrect = "The duplicated() function identifies duplicate rows."
+),
+
+question("Which of these is NOT a common data cleaning issue?",
+  answer("Missing values"),
+  answer("Outliers"),
+  answer("Consistent formatting", correct = TRUE),
+  answer("Incorrect data types"),
+  incorrect = "Consistent formatting is desirable, not an issue to fix."
+),
+
+question("What does the str() function help you identify about your data?",
+  answer("Only the column names"),
+  answer("The structure including variable types", correct = TRUE),
+  answer("The correlation between variables"),
+  answer("The total number of observations"),
+  incorrect = "str() shows structure including variable types and sample values."
+),
+
+question("How would you check for inconsistent capitalization in a character column?",
+  answer("table(df$column)", correct = TRUE),
+  answer("mean(df$column)"),
+  answer("is.numeric(df$column)"),
+  answer("dim(df)"),
+  incorrect = "table() shows all unique values and their frequencies, revealing capitalization issues."
+),
+
+question("Which function would help identify numeric columns with unexpected character values?",
+  answer("suppressWarnings(as.numeric())", correct = TRUE),
+  answer("mean()"),
+  answer("sum()"),
+  answer("head()"),
+  incorrect = "Trying to convert to numeric and checking for warnings helps identify problematic values."
+)
+)
+```
+
+### Question 1: Inspecting data
+
+Load the mtcars dataset and inspect it using `head()`, `str()`, and `summary()`
+
+```{r inspectdf, exercise = TRUE }
+
+
+```
+
+### Question 2: Identify Issues
+
+Identify any potential issues in the dataset **(e.g., missing values, outliers)**.
+
+```{r idissue, exercise = TRUE}
+
+```
+
+## Day 7: Handling Missing Data and Outliers
+
+### Multichoice Questions
+
+```{r day7quiz }
+quiz(
+  caption = "Choose the correct answer from the provided options",
+  question("Which function would you use to completely remove rows with any NA values?",
+  answer("na.omit()", correct = TRUE),
+  answer("is.na()"),
+  answer("na.replace()"),
+  answer("drop.na()"),
+  incorrect = "na.omit() removes rows with any NA values."
+),
+
+question("How would you replace NAs with the column mean using tidyverse?",
+  answer("mutate(across(where(is.numeric), ~replace_na(., mean(., na.rm = TRUE)))", correct = TRUE),
+  answer("drop_na()"),
+  answer("na_mean()"),
+  answer("fill.na()"),
+  incorrect = "This mutate+across+replace_na pattern is the tidyverse way to replace NAs with means."
+),
+
+question("What is Tukey's Fence method used for?",
+  answer("Identifying missing values"),
+  answer("Detecting outliers", correct = TRUE),
+  answer("Imputing data"),
+  answer("Removing duplicates"),
+  incorrect = "Tukey's Fence defines outliers as values outside Q1-1.5*IQR or Q3+1.5*IQR."
+),
+
+question("Which package provides advanced imputation methods for missing values?",
+  answer("dplyr"),
+  answer("mice", correct = TRUE),
+  answer("tidyr"),
+  answer("stringr"),
+  incorrect = "The mice package provides Multiple Imputation by Chained Equations."
+),
+
+question("What does winsorization do to outliers?",
+  answer("Removes them completely"),
+  answer("Replaces them with NA"),
+  answer("Caps them at a threshold value", correct = TRUE),
+  answer("Log transforms them"),
+  incorrect = "Winsorization caps extreme values at specified percentiles rather than removing them."
+),
+
+question("How would you calculate the IQR of a numeric vector x?",
+  answer("IQR(x)", correct = TRUE),
+  answer("mean(x)"),
+  answer("sd(x)"),
+  answer("range(x)"),
+  incorrect = "IQR() calculates the interquartile range (Q3-Q1)."
+),
+
+question("When might log transformation be appropriate for outliers?",
+  answer("When data is normally distributed"),
+  answer("When data has exponential distribution", correct = TRUE),
+  answer("When data has many zero values"),
+  answer("When data is categorical"),
+  incorrect = "Log transform helps with right-skewed data where values span several orders of magnitude."
+)
+)
+```
+
+### Question 1
+
+Load the `airquality` dataset and print the output
+
+```{r airquality, exercise = TRUE}
+
+```
+
+### Question 2
+
+Identify and remove outliers in the `Ozone` column using either winsorization or threshold bound.
+
+```{r matrix, exercise = TRUE}
+
+```
+
+### Question 3
+
+Make a vector with 15 numbers, including one outlier (e.g., much larger than others). Plot it with boxplot().
+
+```{r vecout, exercise = TRUE}
+
+
+```
+
+### Question 4
+
+Create a data frame with 5 rows, including 2 NAs. Impute missing values with mice using the "mean" method.
+
+```{r dfimpute, exercise = TRUE}
+
+
+```
+
+## Day 8: Strings and Date manipulations
+
+```{r day8quiz }
+quiz(
+  caption = "Choose the correct answer from the provided options",
+  question("Which package provides str_detect() for string pattern matching?",
+               answer("lubridate"),
+               answer("stringr", correct = TRUE),
+               answer("dplyr"),
+               answer("forcats"),
+               incorrect = "stringr provides consistent string manipulation functions."
+      ),
+      
+      question("How would you extract the first 3 characters from a string column?",
+               answer("str_sub(column, 1, 3)", correct = TRUE),
+               answer("str_extract(column, '^...')"),
+               answer("str_split(column, 3)"),
+               answer("str_trim(column, 3)"),
+               incorrect = "str_sub() extracts substrings by position."
+      ),
+      
+      question("Which lubridate function converts character to date?",
+               answer("ymd()", correct = TRUE),
+               answer("dmy_time()"),
+               answer("date_convert()"),
+               answer("as.date()"),
+               incorrect = "ymd() and similar functions parse dates from strings."
+      ),
+      
+      question("How would you remove whitespace from both ends of strings?",
+               answer("str_trim()", correct = TRUE),
+               answer("str_clean()"),
+               answer("str_remove()"),
+               answer("str_squish()"),
+               incorrect = "str_trim() removes whitespace from start/end of strings."
+      ),
+      
+      question("Which function would you use to standardize inconsistent date formats?",
+               answer("parse_date_time()", correct = TRUE),
+               answer("str_to_date()"),
+               answer("uniform_date()"),
+               answer("date_convert()"),
+               incorrect = "parse_date_time() handles multiple date formats flexibly."
+      ),
+      
+      question("How would you replace all digits in strings with 'X'?",
+               answer("str_replace_all(string, '\\\\d', 'X')", correct = TRUE),
+               answer("str_remove(string, '0-9')"),
+               answer("str_delete(string, 'digits')"),
+               answer("str_filter(string, '\\\\d')"),
+               incorrect = "str_replace_all() with regex '\\d' matches and replaces digits."
+      ),
+      
+      question("Which lubridate function calculates time intervals?",
+               answer("interval()", correct = TRUE),
+               answer("time_diff()"),
+               answer("duration()"),
+               answer("period()"),
+               incorrect = "interval() creates time intervals for duration calculations."
+      )
+)
+
+```
+
+### Question 1
+
+Create a vector of 4 messy names (e.g., " JOHN DOE", "mary-jane ", "JOhn_wiCK"). Use `str_to_title()` and `str_replace()` and `str_trim()` to clean them.
+```{r messynames, exercise = TRUE}
+
+```
+
+### Question 2
+
+Make a vector of 3 dates in different formats undefined (e.g., ("2023-01-15", "01/25/2023", "02.05.2023"). Parse them into dates using `parse_date_time()`
+```{r parsingdate, exercise = TRUE}
+
+```
+
+### Question 3
+
+Extract the month and year from your parsed dates using `month()` and `year()` from `lubridate`.
+```{r extractdate, exercise = TRUE}
+
+```
+
+
+## Day 9: Data Wrangling and Transformation
+
+### Multichoice Questions
+
+```{r day9quiz }
+quiz(
+  caption = "Choose the correct answer from the provided options",
+  question("Which dplyr verb would you use to select specific columns?",
+              answer("filter()"),
+              answer("select()", correct = TRUE),
+              answer("mutate()"),
+              answer("summarize()"),
+              incorrect = "select() chooses columns by name or helper functions."
+     ),
+     
+     question("How would you perform a left join between df1 and df2?",
+              answer("left_join(df1, df2, by = 'key')", correct = TRUE),
+              answer("merge_left(df1, df2)"),
+              answer("join(df1, df2, type = 'left')"),
+              answer("combine(df1, df2)"),
+              incorrect = "left_join() keeps all rows from the first (left) data frame."
+     ),
+     
+     question("Which tidyr function converts wide data to long format?",
+              answer("pivot_wider()"),
+              answer("pivot_longer()", correct = TRUE),
+              answer("spread()"),
+              answer("gather()"),
+              incorrect = "pivot_longer() is the modern replacement for gather()."
+     ),
+     
+     question("How would you create a new column based on existing ones?",
+              answer("select()"),
+              answer("rename()"),
+              answer("mutate()", correct = TRUE),
+              answer("arrange()"),
+              incorrect = "mutate() creates new columns while preserving existing ones."
+     ),
+     
+     question("Which function would separate '2023-01-15' into year, month, day columns?",
+              answer("separate(date_col, into = c('year','month','day'), sep = '-')", correct = TRUE),
+              answer("split(date_col, '-')"),
+              answer("divide(date_col, parts = 3)"),
+              answer("extract(date_col, c('y','m','d'))"),
+              incorrect = "separate() splits one column into multiple at a delimiter."
+     ),
+     
+     question("How would you summarize data by group means?",
+              answer("df %>% group_by(category) %>% summarize(avg = mean(value))", correct = TRUE),
+              answer("df %>% mean(value)"),
+              answer("df %>% summarize_all(mean)"),
+              answer("df %>% avg_by(category)"),
+              incorrect = "group_by() + summarize() computes group-wise statistics."
+     ),
+     
+     question("Which join keeps only rows with matching keys in both data frames?",
+              answer("left_join()"),
+              answer("right_join()"),
+              answer("inner_join()", correct = TRUE),
+              answer("full_join()"),
+              incorrect = "inner_join() keeps only rows with matches in both tables."
+     )
+)
+```
+
+### `dplyr` exercise with `mtcars`
+
+-   Find all 8-cylinder (`cyl`) cars with horsepower `(hp) > 150`
+-   Create a new column: `miles per horsepower (mpg/hp)`
+-   Calculate the average weight `(wt)` by cylinder `(cyl)`
+
+```{r practicedplyr, exercise = TRUE}
+
+```
+
+### `tidyr` transformation with `iris`
+
+-   Reshape the `iris` data to show `Species`, Measurement `(Sepal.Length, Petal.Length, etc)` and `Value`
+-   Then pivot back to the original format
+
+```{r practicedtidyr, exercise = TRUE}
+
+```
+
+### Merging data
+
+-   Use the data `products` and `sales` created from the code below
+-   Experiment with the different join types we have learnt so far and identify which join gives you:
+    -   All sales including those for discontinued products
+    -   Products that never sold
+
+```{r practicemerge, exercise = TRUE}
+# Products table
+products <- tibble(
+  product_id = c(1, 2, 3, 4, 5),
+  product_name = c("Laptop", "Mouse", "Keyboard", "Monitor", "Printer"),
+  status = c("Active", "Active", "Discontinued", "Active", "Discontinued")
+)
+
+# Sales table
+sales <- tibble(
+  sale_id = c(101, 102, 103, 104),
+  product_id = c(1, 3, 3, 4),
+  amount = c(1200.50, 150.75, 180.25, 300.00),
+  sale_date = as.Date(c("2023-05-01", "2023-06-15", "2023-07-01", "2023-08-10"))
+)
+```

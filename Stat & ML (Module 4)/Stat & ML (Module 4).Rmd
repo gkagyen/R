@@ -1,0 +1,271 @@
+---
+title: "End of Module Quiz (Module 4)"
+output: learnr::tutorial
+runtime: shiny_prerendered
+description: "50 Days Data Science Course"
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(caret)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(MASS)
+library(ROCR)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Day 16: Hypothesis Testing
+
+### Multichoice Questions
+
+```{r day16quiz}
+quiz(
+  caption = "Choose the correct answer from the provided options",
+  question("What is the null hypothesis in a two-sample t-test?",
+         answer("The means of both groups are different"),
+         answer("The means of both groups are equal", correct = TRUE),
+         answer("The variance of both groups are equal"),
+         answer("The distributions of both groups are identical"),
+         incorrect = "The null hypothesis assumes no difference between groups."
+  ),
+
+  question("What does a p-value of 0.03 indicate?",
+         answer("There's a 3% probability the null hypothesis is true"),
+         answer("There's a 97% probability the alternative hypothesis is true"),
+         answer("If the null were true, there's a 3% chance of seeing results this extreme", correct = TRUE),
+         answer("The effect size is 0.03"),
+         incorrect = "The p-value is the probability of observing the data (or more extreme) if the null is true."
+  ),
+
+  question("Which test would you use to compare the means of three measurements from the same individuals?",
+         answer("Independent samples t-test"),
+         answer("Paired t-test", correct = TRUE),
+         answer("Chi-square test"),
+         answer("One-way ANOVA"),
+         incorrect = "Paired t-test is for repeated measurements on the same subjects."
+  ),
+
+  question("What is the alternative hypothesis in a chi-square test of independence?",
+         answer("The variables are normally distributed"),
+         answer("The variables are dependent/associated", correct = TRUE),
+         answer("The variables have equal variance"),
+         answer("The variables follow a specific distribution"),
+         incorrect = "Chi-square tests whether two categorical variables are independent."
+  ),
+
+  question("When would you use a one-sample t-test?",
+         answer("To compare two independent groups"),
+         answer("To compare a sample mean to a known population mean", correct = TRUE),
+         answer("To compare three or more groups"),
+         answer("To test for normality"),
+         incorrect = "One-sample t-test compares sample mean to a hypothesized value."
+  ),
+
+  question("What assumption is common to t-tests but not chi-square tests?",
+         answer("Random sampling"),
+         answer("Expected frequencies >5"),
+         answer("Normally distributed data", correct = TRUE),
+         answer("Categorical variables"),
+         incorrect = "T-tests assume normally distributed data (or large samples)."
+  )
+)
+```
+
+### One-sample t-test
+
+Perform a one-sample t-test on the `mtcars` `mpg` column to test if the **mean differs from 20**. Store the result in `t_result`.
+```{r 1samplet, exercise = TRUE}
+
+
+```
+
+### Independent(2) sample t-test
+
+Perform an independent samples t-test comparing `mpg` between automatic `(am=0)` and manual `(am=1)` cars in `mtcars`. Assume **unequal variances**.
+```{r 2samplet, exercise = TRUE}
+
+
+```
+
+### Chi-Square test of independence
+
+Perform a chi-square test of independence between `cyl` (number of cylinders) and `vs` (engine shape) in `mtcars`. Store the result in `chi_result`
+```{r chisquare, exercise = TRUE}
+
+
+```
+
+### Paired t-test
+
+Perform a **paired t-test** comparing the first and second measurements in the `sleep` dataset. the `extra` column contains increase in hours of sleep after given drug 1 and 2 (`group`) to 10 students.
+
+```{r pairedt, exercise = TRUE}
+
+```
+
+## Day 17: Analysis of Variance (ANOVA)
+
+### Multichoice Questions
+
+```{r day17quiz}
+quiz(
+  caption = "Choose the correct answer from the provided options",
+  question("What does ANOVA test?",
+         answer("Differences between variances of groups"),
+         answer("Differences between means of two groups"),
+         answer("Differences between means of two or more groups", correct = TRUE),
+         answer("Correlations between variables"),
+         incorrect = "ANOVA compares means across multiple groups."
+  ),
+
+  question("What is the null hypothesis in one-way ANOVA?",
+         answer("All group means are equal", correct = TRUE),
+         answer("All group variances are equal"),
+         answer("At least one group mean is different"),
+         answer("The data are normally distributed"),
+         incorrect = "ANOVA's null hypothesis is that all group means are equal."
+  ),
+
+  question("What does the F-statistic in ANOVA represent?",
+         answer("The ratio of between-group to within-group variability", correct = TRUE),
+         answer("The difference between largest and smallest means"),
+         answer("The average variance across groups"),
+         answer("The probability of Type I error"),
+         incorrect = "F-statistic compares between-group to within-group variation."
+  ),
+
+  question("When would you use Tukey's HSD test?",
+         answer("To test ANOVA assumptions"),
+         answer("To compare all pairs of groups after significant ANOVA", correct = TRUE),
+         answer("To transform non-normal data"),
+         answer("To calculate effect size"),
+         incorrect = "Tukey's HSD controls family-wise error rate in multiple comparisons."
+  ),
+
+  question("Which assumption is NOT required for ANOVA?",
+         answer("Normally distributed residuals"),
+         answer("Equal variances across groups"),
+         answer("Independent observations"),
+         answer("Equal sample sizes", correct = TRUE),
+         incorrect = "ANOVA can handle unequal sample sizes (though balanced designs are preferred)."
+  ),
+
+  question("What does a significant Levene's test indicate about your ANOVA?",
+         answer("The group means are different"),
+         answer("The homogeneity of variance assumption is violated", correct = TRUE),
+         answer("The data are not normally distributed"),
+         answer("The sample size is too small"),
+         incorrect = "Levene's test checks the equal variance assumption."
+  )
+)
+```
+
+### One-way ANOVA
+
+Perform a **one-way ANOVA** testing if `mpg` differs by number of gears `(gear)` in `mtcars`. Store the result in `aov_result`.
+```{r 1waynova, exercise = TRUE}
+
+```
+
+### Post-hoc Test
+
+Perform **Tukey's HSD** test on the ANOVA result comparing `mpg` by cylinder count `(cyl)` in `mtcars`.
+```{r tukeyhsd, exercise = TRUE}
+
+```
+
+### Checking ANOVA Assumptions
+
+Check ANOVA assumptions by plotting the diagnostic plots for the `aov` model of `mpg` by `vs` or using Shapiro and Levennes test.
+```{r asumnova, exercise = TRUE}
+
+```
+
+
+## Day 18: ML Basics - SL with Linear Regression
+
+### Multichoice Questions
+
+```{r day18quiz}
+quiz(
+  caption = "Choose the correct answer from the provided options",
+  question("Which is NOT a type of machine learning?",
+         answer("Supervised learning"),
+         answer("Unsupervised learning"),
+         answer("Reinforcement learning"),
+         answer("Descriptive learning", correct = TRUE),
+         incorrect = "The main types are supervised, unsupervised, and reinforcement learning."
+ ),
+
+ question("What is the primary goal of supervised learning?",
+         answer("To discover hidden patterns in data"),
+         answer("To learn a mapping from inputs to outputs", correct = TRUE),
+         answer("To maximize rewards in an environment"),
+         answer("To reduce data dimensionality"),
+         incorrect = "Supervised learning learns from labeled examples to predict outcomes."
+ ),
+
+ question("Which caret function trains models?",
+         answer("predict()"),
+         answer("train()", correct = TRUE),
+         answer("model()"),
+         answer("fit()"),
+         incorrect = "The train() function in caret handles model training."
+ ),
+
+ question("What does RMSE measure in regression?",
+         answer("The correlation between predicted and actual values"),
+         answer("The average magnitude of prediction errors", correct = TRUE),
+         answer("The proportion of variance explained"),
+         answer("The classification accuracy"),
+         incorrect = "Root Mean Squared Error measures prediction error magnitude."
+ ),
+
+ question("Which is NOT a step in a typical ML workflow?",
+         answer("Data preprocessing"),
+         answer("Model training"),
+         answer("Feature engineering"),
+         answer("Hypothesis testing", correct = TRUE),
+         incorrect = "While important, hypothesis testing isn't a core ML workflow step."
+ ),
+
+question("What does the 'preProcess' argument in caret's train() control?",
+         answer("The model hyperparameters"),
+         answer("The data preprocessing steps", correct = TRUE),
+         answer("The performance metrics"),
+         answer("The computational backend"),
+         incorrect = "preProcess handles centering, scaling, imputation etc."
+ )
+)
+```
+
+
+### Linear regression
+
+Train a **linear regression model** to predict `mpg` from `wt` in `mtcars` using `caret`. Store the model in `lm_model`
+```{r linreg, exercise = TRUE}
+
+```
+
+### Evaluate model
+
+Calculate **RMSE** and **R-squared** for predictions on the `mtcars` training set using the `lm_model` you created.
+```{r evalmod, exercise = TRUE}
+
+```
+
+### Splitting data
+
+Create a **70-30** train-test split of the `mtcars` data for `mpg` prediction. Use `set.seed(500)` and store train data in `train_data`.
+```{r splitdat, exercise = TRUE}
+
+```
+
+### Cross-Validation
+
+Train a linear regression model with **10-fold cross-validation** to predict `mpg` from `wt` and `hp` in `mtcars`.
+```{r crossval, exercise = TRUE}
+
+```
